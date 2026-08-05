@@ -1,0 +1,12 @@
+<ion-item class="custom-input" lines="none">
+  <ion-icon *ngIf="icon" color="success" slot="start" [name]="icon" aria-hidden="true"></ion-icon>
+  <ion-input [formControl]="formControl" [type]="type" label-placement="floating" [readonly]="readOnly">
+    <div slot="label"> {{label}}
+      <ion-text color="danger" *ngIf="formControl.hasError('required')">*</ion-text>
+    </div>
+  </ion-input>
+  <ion-button *ngIf="isPassword" fill="clear" slot="end" aria-label="show" (click)="showPassword()">
+    <ion-icon color="success" slot="icon-only" [name]="hide ? 'eye-outline' : 'eye-off-outline'"
+      aria-hidden="true"></ion-icon>
+  </ion-button>
+</ion-item>

@@ -1,0 +1,16 @@
+<ion-content>
+  <div class="div-flex-center">
+    <form [formGroup]="formAuth" (ngSubmit)="onSubmit()" (keypress.enter)="onSubmit()">
+      <app-logo></app-logo>
+      <app-custom-input type="email" icon="person-circle-outline" label="Usuario"
+        [formControl]="$any(formAuth).get('email')"></app-custom-input>
+      <app-custom-input type="password" icon="lock-closed-outline" label="Contraseña"
+        [formControl]="$any(formAuth).get('password')"></app-custom-input>
+      <p class="ion-text-end" routerLink="forgot-password">¿Olvidaste tu contraseña?</p>
+      <ion-button type="submit" [disabled]="formAuth.invalid" expand="block" shape="round" mode="ios" color="success"
+        class="button-submit">
+        Iniciar Sesión
+      </ion-button>
+    </form>
+  </div>
+</ion-content>
