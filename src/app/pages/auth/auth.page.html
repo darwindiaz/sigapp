@@ -1,6 +1,6 @@
 <ion-content>
   <div class="div-flex-center">
-    <form [formGroup]="formAuth" (ngSubmit)="onSubmit()" (keypress.enter)="onSubmit()">
+    <form [formGroup]="formAuth" (ngSubmit)="onSubmit()">
       <app-logo></app-logo>
       <app-custom-input type="email" icon="person-circle-outline" label="Usuario"
         [formControl]="$any(formAuth).get('email')"></app-custom-input>

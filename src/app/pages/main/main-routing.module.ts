@@ -11,20 +11,24 @@ const routes: Routes = [
     component: MainPage,
     children: [
       {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+      },
+      {
         path: 'home',
         component: HomeComponent,
       },
       {
         path: 'inventory',
         component: InventoryComponent,
-      }
-
-    ]
-  }
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MainPageRoutingModule { }
+export class MainPageRoutingModule {}

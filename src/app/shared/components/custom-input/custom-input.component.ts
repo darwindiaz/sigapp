@@ -16,17 +16,17 @@ export class CustomInputComponent implements OnInit {
   @Input() fill!: string;
   @Input() readOnly!: boolean;
 
-  isPassword: boolean = false;
+  inputText!: string;
   hide: boolean = true;
 
   constructor() { }
 
   ngOnInit() {
-    this.isPassword = this.type == "password" ? true : false;
+    this.inputText = this.type;
   }
 
   showPassword() {
     this.hide = !this.hide;
-    this.type = this.hide ? 'password' : 'text';
+    this.inputText = this.hide ? 'password' : 'text';
   }
 }
