@@ -6,26 +6,15 @@ import { LogoComponent } from './components/logo/logo.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
-  declarations: [
-    CustomInputComponent,
-    HeaderComponent,
-    LogoComponent
-  ],
+  declarations: [CustomInputComponent, HeaderComponent, LogoComponent],
   exports: [
     CustomInputComponent,
     HeaderComponent,
     LogoComponent,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule],
 })
-export class SharedModule { }
+export class SharedModule {}

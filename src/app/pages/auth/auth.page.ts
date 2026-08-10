@@ -57,14 +57,14 @@ export class AuthPage {
   }
 
   async getUserInfo(uid: string) {
-    let path = `users/${uid}`;
+    const path = `users/${uid}`;
     console.log('path', path);
-    this.firebaseService
+    await this.firebaseService
       .getDocument(path)
       .then((user: User) => {
         this.utilsService.saveInLocalStorga('user', user);
         this.formAuth.reset();
-        this.utilsService.routerLink('/main/home');
+        this.utilsService.routerLink('/home');
       })
       .catch((error) => {
         console.error(error);
