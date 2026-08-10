@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { AnimalComponent } from './components/animal/animal.component';
 
@@ -8,7 +9,7 @@ import { AnimalComponent } from './components/animal/animal.component';
   styleUrls: ['./inventory.component.scss'],
 })
 export class InventoryComponent implements OnInit {
-  backUrl: string = '/home';
+  backUrl: string = APP_ROUTES.home;
   constructor(private utilsService: UtilsService) {}
 
   ngOnInit() {

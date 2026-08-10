@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   onClick(event: number) {
     if (event === 1) {
-      void this.utilsService.routerLink('/inventory');
+      void this.utilsService.routerLink(APP_ROUTES.inventory);
     }
   }
 }

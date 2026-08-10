@@ -28,3 +28,4 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     type: AppMessageType.Danger,
   },
 };
+

@@ -8,7 +8,6 @@ import {
   Firestore,
 } from '@angular/fire/firestore';
 import {
-  getStorage,
   uploadString,
   ref,
   getDownloadURL,
@@ -19,6 +18,7 @@ import {
   UserCredential,
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
+import { APP_ROUTES } from '../constants/app-routes.constant';
 import { User } from '../models/user.models';
 import { UtilsService } from './utils.service';
 
@@ -39,7 +39,7 @@ export class FirebaseService {
   async singOut(): Promise<void> {
     await this.auth.signOut();
     this.utilsService.cleanLocalStorage();
-    await this.utilsService.routerLink('/auth');
+    await this.utilsService.routerLink(APP_ROUTES.auth);
   }
 
   getAuth() {

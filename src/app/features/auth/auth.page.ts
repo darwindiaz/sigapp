@@ -8,14 +8,12 @@ import {
 
 import { User } from 'src/app/core/models/user.models';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
+import { AppResult } from 'src/app/core/interfaces/app-result.interface';
+import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 
 import { FirebaseService } from 'src/app/core/services/firebase.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { MessageService } from 'src/app/core/services/message.service';
-
-export type AppResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; message: AppMessageCode };
 
 @Component({
   selector: 'app-auth',
@@ -58,7 +56,7 @@ export class AuthPage {
       }
 
       this.utilsService.saveInLocalStorga('user', userResult.data);
-      await this.utilsService.routerLink('/home');
+      await this.utilsService.routerLink(APP_ROUTES.home);
       this.formAuth.reset();
     } catch (error) {
       console.error(error);
