@@ -1,7 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FirebaseService } from 'src/app/services/firebase.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { FirebaseService } from 'src/app/core/services/firebase.service';
+import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
   selector: 'app-animal',
@@ -9,7 +14,6 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./animal.component.scss'],
 })
 export class AnimalComponent implements OnInit {
-
   isModal = true;
   formAnimal: FormGroup;
   spinner;
@@ -38,7 +42,11 @@ export class AnimalComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log("onsubmit data", this.formAnimal.getRawValue(), this.formAnimal.errors);
+    console.log(
+      'onsubmit data',
+      this.formAnimal.getRawValue(),
+      this.formAnimal.errors,
+    );
     /*if (this.formAnimal.valid) {
       (await this.spinner).present();
       this.firebaseService.signIn(this.formAnimal.value).then(res => {

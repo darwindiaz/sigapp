@@ -30,7 +30,7 @@
             [formControl]="$any(formAnimal).get('isPure')">Es raza pura?:</ion-toggle>
         </ion-item>
       </ion-list>
-      <app-custom-input type="text" label="Marca" [formControl]="$any(formAnimal).get('ironMark')"></app-custom-input>
+      <app-custom-input type="text" label="Marca" [control]="$any(formAnimal).get('ironMark')"></app-custom-input>
       <!--app-custom-input type="text" label="Raza" [formControl]="$any(formAnimal).get('breed')"></app-custom-input>
       <app-custom-input type="text" label="Nombre" [formControl]="$any(formAnimal).get('name')"></app-custom-input>
       <app-custom-input type="text" label="Proposito" [formControl]="$any(formAnimal).get('pupose')"></app-custom-input>

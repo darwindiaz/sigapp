@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { FirebaseService } from 'src/app/services/firebase.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { FirebaseService } from 'src/app/core/services/firebase.service';
+import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +8,6 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-
   @Input() title!: string;
   @Input() backButton!: string;
   @Input() isModal!: boolean;
@@ -23,8 +22,8 @@ export class HeaderComponent {
     this.title = '';
   }
 
-  signOut() {
-    this.firebaseService.singOut();
+  async signOut() {
+    await this.firebaseService.singOut();
   }
 
   dismissModal() {

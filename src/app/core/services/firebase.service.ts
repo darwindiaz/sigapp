@@ -1,18 +1,31 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, getDoc, setDoc, doc, collection, Firestore } from '@angular/fire/firestore';
-import { getStorage, uploadString, ref, getDownloadURL, Storage } from '@angular/fire/storage';
-import { Auth, UserCredential, signInWithEmailAndPassword } from '@angular/fire/auth';
+import {
+  addDoc,
+  getDoc,
+  setDoc,
+  doc,
+  collection,
+  Firestore,
+} from '@angular/fire/firestore';
+import {
+  getStorage,
+  uploadString,
+  ref,
+  getDownloadURL,
+  Storage,
+} from '@angular/fire/storage';
+import {
+  Auth,
+  UserCredential,
+  signInWithEmailAndPassword,
+} from '@angular/fire/auth';
 import { User } from '../models/user.models';
 import { UtilsService } from './utils.service';
 
-
-
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
-
   private auth = inject(Auth);
   private firestore = inject(Firestore);
   private firestorage = inject(Storage);
@@ -23,10 +36,10 @@ export class FirebaseService {
     return signInWithEmailAndPassword(this.auth, user.email, user.password);
   }
 
-  singOut() {
-    this.auth.signOut();
+  async singOut(): Promise<void> {
+    await this.auth.signOut();
     this.utilsService.cleanLocalStorage();
-    this.utilsService.routerLink('/auth')
+    await this.utilsService.routerLink('/auth');
   }
 
   getAuth() {
@@ -48,8 +61,10 @@ export class FirebaseService {
 
   /*Almacenamiento */
   async uploadImage(path: string, data_url: string) {
-    return uploadString(ref(this.firestorage, path), data_url, 'data_url').then((img) => {
-      return getDownloadURL(ref(this.firestorage, path));
-    });
+    return uploadString(ref(this.firestorage, path), data_url, 'data_url').then(
+      (img) => {
+        return getDownloadURL(ref(this.firestorage, path));
+      },
+    );
   }
 }

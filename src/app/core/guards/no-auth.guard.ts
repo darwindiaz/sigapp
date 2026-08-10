@@ -7,5 +7,5 @@ export const noAuthGuard: CanActivateFn = () => {
   const router = inject(Router);
   const auth = firebaseService.getAuth();
 
-  return auth.currentUser ? router.createUrlTree(['/main/home']) : true;
+  return auth.currentUser ? router.createUrlTree(['/home']) : true;
 };

@@ -1,36 +1,41 @@
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, ModalController, ModalOptions, ToastController, ToastOptions } from '@ionic/angular';
+import {
+  LoadingController,
+  ModalController,
+  ModalOptions,
+  ToastController,
+  ToastOptions,
+} from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilsService {
-
   constructor(
     private loadingController: LoadingController,
     private toastController: ToastController,
     private modalController: ModalController,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   /*Spinner loading*/
   async loading() {
     return await this.loadingController.create({
       message: 'Loading...',
-      spinner: 'circular'
+      spinner: 'circular',
     });
   }
 
   /*Modal message*/
   async toast(options: ToastOptions) {
     const toast = await this.toastController.create(options);
-    toast.present();
+    await toast.present();
   }
 
   /*Navigate by url*/
   routerLink(url: string): Promise<boolean> {
-    return this.router.navigateByUrl(url)
+    return this.router.navigateByUrl(url, { replaceUrl: true });
   }
 
   /*Save value in localstorage*/
@@ -66,5 +71,4 @@ export class UtilsService {
   dismissModal(data?: any) {
     return this.modalController.dismiss(data);
   }
-
 }
