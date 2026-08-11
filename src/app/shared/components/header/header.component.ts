@@ -1,6 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
+import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { FirebaseService } from 'src/app/core/services/firebase.service';
-import { UtilsService } from 'src/app/core/services/utils.service';
+import { ModalService } from 'src/app/core/services/modal.service';
+import { NavigationService } from 'src/app/core/services/navigation.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +18,9 @@ export class HeaderComponent {
   nameApp: string;
 
   private firebaseService: FirebaseService = inject(FirebaseService);
-  private utilsService: UtilsService = inject(UtilsService);
+  private modalService: ModalService = inject(ModalService);
+  private storageService: StorageService = inject(StorageService);
+  private navigationService: NavigationService = inject(NavigationService);
 
   constructor() {
     this.nameApp = 'S I G A P P';
@@ -23,10 +28,12 @@ export class HeaderComponent {
   }
 
   async signOut() {
-    await this.firebaseService.singOut();
+    await this.firebaseService.signOut();
+    this.storageService.clear();
+    await this.navigationService.goTo(APP_ROUTES.auth);
   }
 
   dismissModal() {
-    this.utilsService.dismissModal();
+    this.modalService.dismissModal();
   }
 }

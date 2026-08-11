@@ -18,9 +18,7 @@ import {
   UserCredential,
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
-import { APP_ROUTES } from '../constants/app-routes.constant';
-import { User } from '../models/user.models';
-import { UtilsService } from './utils.service';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,17 +27,14 @@ export class FirebaseService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
   private firestorage = inject(Storage);
-  private utilsService = inject(UtilsService);
 
   /*Autenticacion*/
   signIn(user: User): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, user.email, user.password);
   }
 
-  async singOut(): Promise<void> {
+  async signOut(): Promise<void> {
     await this.auth.signOut();
-    this.utilsService.cleanLocalStorage();
-    await this.utilsService.routerLink(APP_ROUTES.auth);
   }
 
   getAuth() {

@@ -6,14 +6,17 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { User } from 'src/app/core/models/user.models';
+import { User } from 'src/app/core/models/user.model';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
 import { AppResult } from 'src/app/core/interfaces/app-result.interface';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 
 import { FirebaseService } from 'src/app/core/services/firebase.service';
-import { UtilsService } from 'src/app/core/services/utils.service';
 import { MessageService } from 'src/app/core/services/message.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { NavigationService } from 'src/app/core/services/navigation.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { STORAGE_KEYS } from 'src/app/core/constants/storage-keys.constant';
 
 @Component({
   selector: 'app-auth',
@@ -24,7 +27,9 @@ export class AuthPage {
   formAuth: FormGroup;
   private firebaseService: FirebaseService = inject(FirebaseService);
   private messageService: MessageService = inject(MessageService);
-  private utilsService: UtilsService = inject(UtilsService);
+  private loadingService = inject(LoadingService);
+  private navigationService = inject(NavigationService);
+  private storageService = inject(StorageService);
 
   constructor(fb: FormBuilder) {
     this.formAuth = fb.group({
@@ -40,7 +45,7 @@ export class AuthPage {
       return;
     }
 
-    const loading = await this.utilsService.loading();
+    const loading = await this.loadingService.createLoading();
     await loading.present();
 
     try {
@@ -55,8 +60,8 @@ export class AuthPage {
         return;
       }
 
-      this.utilsService.saveInLocalStorga('user', userResult.data);
-      await this.utilsService.routerLink(APP_ROUTES.home);
+      await this.storageService.set(STORAGE_KEYS.user, userResult.data);
+      await this.navigationService.goTo(APP_ROUTES.home);
       this.formAuth.reset();
     } catch (error) {
       console.error(error);
