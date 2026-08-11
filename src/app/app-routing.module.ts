@@ -15,19 +15,10 @@ const routes: Routes = [
       import('./features/auth/auth.module').then((m) => m.AuthPageModule),
     canActivate: [noAuthGuard],
   },
-
   {
-    path: 'home',
+    path: 'main',
     loadChildren: () =>
-      import('./features/home/home.module').then((m) => m.HomeModule),
-    canActivate: [authGuard],
-  },
-  {
-    path: 'inventory',
-    loadChildren: () =>
-      import('./features/inventory/inventory.module').then(
-        (m) => m.InventoryModule,
-      ),
+      import('./features/main/main.module').then((m) => m.MainModule),
     canActivate: [authGuard],
   },
 ];

@@ -1,0 +1,38 @@
+<ion-tabs class="main-tabs">
+  <ion-tab-bar slot="bottom" class="main-tab-bar">
+    <ion-tab-button tab="home" href="/main/home">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="paddocks" href="/main/paddocks">
+      <ion-icon name="grid-outline"></ion-icon>
+      <ion-label>Potreros</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button class="main-action-placeholder" (click)="openRegisterOptions($event)">
+      <ion-label>Registrar</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inventory" href="/main/inventory">
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-label>Inventario</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="health" href="/main/health">
+      <ion-icon name="medkit-outline"></ion-icon>
+      <ion-label>Salud</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+  <ion-fab
+    vertical="bottom"
+    horizontal="center"
+    slot="fixed"
+    class="main-action-fab"
+  >
+    <ion-fab-button (click)="openRegisterOptions($event)">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-tabs>
