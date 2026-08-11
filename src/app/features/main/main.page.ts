@@ -1,8 +1,11 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 
+import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { MAIN_ACTIONS } from 'src/app/core/constants/main-action.constants';
 import { MainActionCode } from 'src/app/core/enums/main-action-code.enum';
+import { NavigationService } from 'src/app/core/services/navigation.service';
 
 @Component({
   selector: 'app-main',
@@ -11,6 +14,7 @@ import { MainActionCode } from 'src/app/core/enums/main-action-code.enum';
 })
 export class MainPage {
   private actionSheetController = inject(ActionSheetController);
+  private navigationService: NavigationService = inject(NavigationService);
 
   async openRegisterOptions(event: Event): Promise<void> {
     event.preventDefault();
@@ -40,20 +44,40 @@ export class MainPage {
   private handleMainAction(actionCode: MainActionCode): void {
     switch (actionCode) {
       case MainActionCode.RegisterAnimal:
-        console.log('Registrar animal');
+        this.navigationService.goTo(APP_ROUTES.createAnimal);
         break;
 
       case MainActionCode.RegisterBirth:
-        console.log('Registrar nacimiento');
+        this.navigationService.goTo(APP_ROUTES.createBirth);
         break;
 
       case MainActionCode.RegisterVaccination:
-        console.log('Registrar vacunación');
+        this.navigationService.goTo(APP_ROUTES.createVaccination);
         break;
 
       case MainActionCode.MoveAnimal:
-        console.log('Movimiento de potrero');
+        this.navigationService.goTo(APP_ROUTES.createPaddockMovement);
         break;
     }
+  }
+
+  goToProfile(): void {
+    console.log('Ir a perfil');
+  }
+
+  goToSettings(): void {
+    console.log('Ir a configuración');
+  }
+
+  goToFarmSettings(): void {
+    console.log('Ir a finca');
+  }
+
+  goToHelp(): void {
+    console.log('Ir a ayuda');
+  }
+
+  async signOut(): Promise<void> {
+    console.log('Cerrar sesión');
   }
 }

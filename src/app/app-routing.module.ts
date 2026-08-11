@@ -13,13 +13,13 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () =>
       import('./features/auth/auth.module').then((m) => m.AuthPageModule),
-    canActivate: [noAuthGuard],
+    canActivate: [], //noAuthGuard
   },
   {
     path: 'main',
     loadChildren: () =>
       import('./features/main/main.module').then((m) => m.MainModule),
-    canActivate: [authGuard],
+    canActivate: [], //authGuard
   },
 ];
 

@@ -1,4 +1,47 @@
-<ion-tabs class="main-tabs">
+<ion-menu contentId="main-content" menuId="main-menu">
+  <ion-header>
+    <ion-toolbar color="success">
+      <ion-title>SIGAPP</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <div class="side-menu-content">
+      <ion-list class="" side-menu-list>
+        <ion-menu-toggle auto-hide="true">
+          <ion-item button lines="full" (click)="goToProfile()">
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-label>Perfil</ion-label>
+          </ion-item>
+          <ion-item button lines="full" (click)="goToSettings()">
+            <ion-icon name="settings-outline" slot="start"></ion-icon>
+            <ion-label>Configuración</ion-label>
+          </ion-item>
+
+          <ion-item button lines="full" (click)="goToFarmSettings()">
+            <ion-icon name="business-outline" slot="start"></ion-icon>
+            <ion-label>Finca</ion-label>
+          </ion-item>
+
+          <ion-item button lines="full" (click)="goToHelp()">
+            <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+            <ion-label>Ayuda</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-list class="side-menu-footer">
+        <ion-menu-toggle auto-hide="true">
+          <ion-item button lines="full" color="success" (click)="signOut()">
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+            <ion-label>Cerrar sesión</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </div>
+  </ion-content>
+</ion-menu>
+
+<ion-tabs id="main-content" class="main-tabs">
   <ion-tab-bar slot="bottom" class="main-tab-bar">
     <ion-tab-button tab="home" href="/main/home">
       <ion-icon name="home-outline"></ion-icon>
@@ -10,7 +53,10 @@
       <ion-label>Potreros</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button class="main-action-placeholder" (click)="openRegisterOptions($event)">
+    <ion-tab-button
+      class="main-action-placeholder"
+      (click)="openRegisterOptions($event)"
+    >
       <ion-label>Registrar</ion-label>
     </ion-tab-button>
 

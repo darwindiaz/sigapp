@@ -15,6 +15,8 @@ export class HeaderComponent {
   @Input() backButton!: string;
   @Input() isModal!: boolean;
   @Input() isSignOut!: boolean;
+  @Input() isMenuButton!: boolean;
+
   nameApp: string;
 
   private firebaseService: FirebaseService = inject(FirebaseService);

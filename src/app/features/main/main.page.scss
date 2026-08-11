@@ -31,3 +31,21 @@
   --color: var(--ion-color-success-contrast);
   --box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
 }
+
+.side-menu-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.side-menu-list,
+.side-menu-footer {
+  padding: 0;
+}
+
+.side-menu-list ion-item,
+.side-menu-footer ion-item {
+  --inner-border-width: 0 0 1px 0;
+  --border-color: var(--ion-color-step-200, #d9d9d9);
+}

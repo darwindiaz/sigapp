@@ -14,6 +14,34 @@ const routes: Routes = [
           import('../home/home.module').then((m) => m.HomeModule),
       },
       {
+        path: 'animals/create',
+        loadChildren: () =>
+          import('../animals/animal-create/animal-create.module').then(
+            (m) => m.AnimalCreateModule,
+          ),
+      },
+      {
+        path: 'births/create',
+        loadChildren: () =>
+          import('../births/birth-create/birth-create.module').then(
+            (m) => m.BirthCreateModule,
+          ),
+      },
+      {
+        path: 'health/vaccination/create',
+        loadChildren: () =>
+          import(
+            '../health/vaccination-create/vaccination-create.module'
+          ).then((m) => m.VaccinationCreateModule),
+      },
+      {
+        path: 'paddocks/movement/create',
+        loadChildren: () =>
+          import(
+            '../paddocks/movement-create/paddock-movement-create.module'
+          ).then((m) => m.PaddockMovementCreateModule),
+      },
+      {
         path: 'inventory',
         loadChildren: () =>
           import('../inventory/inventory.module').then(
@@ -23,23 +51,17 @@ const routes: Routes = [
       {
         path: 'paddocks',
         loadChildren: () =>
-          import('../inventory/inventory.module').then(
-            (m) => m.InventoryModule,
-          ),
+          import('../paddocks/paddocks.module').then((m) => m.PaddocksModule),
       },
       {
         path: 'health',
         loadChildren: () =>
-          import('../inventory/inventory.module').then(
-            (m) => m.InventoryModule,
-          ),
+          import('../health/health.module').then((m) => m.HealthModule),
       },
       {
         path: 'reports',
         loadChildren: () =>
-          import('../inventory/inventory.module').then(
-            (m) => m.InventoryModule,
-          ),
+          import('../reports/reports.module').then((m) => m.ReportsModule),
       },
     ],
   },

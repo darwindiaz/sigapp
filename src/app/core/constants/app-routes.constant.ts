@@ -6,4 +6,8 @@ export const APP_ROUTES = {
   paddocks: '/main/paddocks',
   health: '/main/health',
   reports: '/main/reports',
+  createAnimal: '/main/animals/create',
+  createBirth: '/main/births/create',
+  createVaccination: '/main/health/vaccination/create',
+  createPaddockMovement: '/main/paddocks/movement/create',
 } as const;

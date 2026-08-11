@@ -1,15 +1,20 @@
 <ion-header>
   <ion-toolbar color="success">
     <ion-buttons slot="start">
+      <!--Menu hamburger-->
+      <ion-menu-button *ngIf="isMenuButton" menu="main-menu"></ion-menu-button>
       <!--Back button-->
-      <ion-back-button *ngIf="backButton" [defaultHref]="backButton"></ion-back-button>
+      <ion-back-button
+        *ngIf="backButton"
+        [defaultHref]="backButton"
+      ></ion-back-button>
       <!--Dismiss modal button-->
       <ion-button *ngIf="isModal" (click)="dismissModal()">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{title}}</ion-title>
-    <div class="subtitle">{{nameApp}}</div>
+    <ion-title>{{ title }}</ion-title>
+    <div class="subtitle">{{ nameApp }}</div>
     <ion-buttons slot="end">
       <ion-button *ngIf="isSignOut" (click)="signOut()">
         <ion-icon name="power"></ion-icon>
