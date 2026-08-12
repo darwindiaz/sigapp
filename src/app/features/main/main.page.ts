@@ -5,7 +5,9 @@ import { ActionSheetController } from '@ionic/angular';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { MAIN_ACTIONS } from 'src/app/core/constants/main-action.constants';
 import { MainActionCode } from 'src/app/core/enums/main-action-code.enum';
+import { FirebaseService } from 'src/app/core/services/firebase.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-main',
@@ -14,7 +16,9 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
 })
 export class MainPage {
   private actionSheetController = inject(ActionSheetController);
+  private firebaseService: FirebaseService = inject(FirebaseService);
   private navigationService: NavigationService = inject(NavigationService);
+  private storageService: StorageService = inject(StorageService);
 
   async openRegisterOptions(event: Event): Promise<void> {
     event.preventDefault();
@@ -77,7 +81,9 @@ export class MainPage {
     console.log('Ir a ayuda');
   }
 
-  async signOut(): Promise<void> {
-    console.log('Cerrar sesión');
+  async signOut() {
+    await this.firebaseService.signOut();
+    this.storageService.clear();
+    await this.navigationService.goTo(APP_ROUTES.auth);
   }
 }
