@@ -5,4 +5,5 @@ export enum AppMessageCode {
   RequiredFields = 'REQUIRED_FIELDS',
   UnexpectedError = 'UNEXPECTED_ERROR',
   NetworkError = 'NETWORK_ERROR',
+  AnimalCreated = 'ANIMAL_CREATED',
 }

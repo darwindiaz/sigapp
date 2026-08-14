@@ -2,9 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import {
   addDoc,
   getDoc,
+  getDocs,
   setDoc,
   doc,
   collection,
+  query,
   Firestore,
 } from '@angular/fire/firestore';
 import {
@@ -42,6 +44,17 @@ export class FirebaseService {
   }
 
   /*DB*/
+  async getCollection<T>(path: string): Promise<T[]> {
+    const collectionRef = collection(this.firestore, path);
+    const collectionQuery = query(collectionRef);
+    const querySnapshot = await getDocs(collectionQuery);
+
+    return querySnapshot.docs.map((document) => ({
+      id: document.id,
+      ...document.data(),
+    })) as T[];
+  }
+
   setDocument(path: string, data: any): Promise<void> {
     return setDoc(doc(this.firestore, path), data);
   }

@@ -2,8 +2,8 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'siga',
-  webDir: 'www'
+  appName: 'SIGAPP',
+  webDir: 'www',
 };
 
 export default config;

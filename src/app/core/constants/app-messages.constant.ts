@@ -27,5 +27,8 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     text: 'No se pudo conectar con el servidor',
     type: AppMessageType.Danger,
   },
+  [AppMessageCode.AnimalCreated]: {
+    text: 'Animal creado exitosamente',
+    type: AppMessageType.Danger,
+  },
 };
-

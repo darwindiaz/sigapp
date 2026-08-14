@@ -1,19 +1,97 @@
 <app-header title="Registrar animal" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col size="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Nuevo animal</ion-card-title>
-            <ion-card-subtitle>Formulario pendiente</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            Próximo paso: crear el formulario mínimo para especie, identificación, sexo, fecha de ingreso, estado y potrero.
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Código / identificación</ion-label>
+        <ion-input
+          formControlName="code"
+          placeholder="Ej: VACA-001"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Especie</ion-label>
+        <ion-select formControlName="species" placeholder="Seleccionar">
+          <ion-select-option
+            *ngFor="let species of speciesOptions"
+            [value]="species"
+          >
+            {{ species }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Categoría</ion-label>
+        <ion-select formControlName="category" placeholder="Seleccionar">
+          <ion-select-option
+            *ngFor="let category of categoryOptions"
+            [value]="category"
+          >
+            {{ category }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Sexo</ion-label>
+        <ion-select formControlName="sex" placeholder="Seleccionar">
+          <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
+            {{ sex }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Fecha nacimiento / ingreso</ion-label>
+        <ion-input type="date" formControlName="birthDate"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Estado</ion-label>
+        <ion-select formControlName="status">
+          <ion-select-option
+            *ngFor="let status of statusOptions"
+            [value]="status"
+          >
+            {{ status }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Potrero actual</ion-label>
+        <ion-input
+          formControlName="paddockId"
+          placeholder="ID o nombre del potrero"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Propósito</ion-label>
+        <ion-select formControlName="purpose" placeholder="Seleccionar">
+          <ion-select-option
+            *ngFor="let purpose of purposeOptions"
+            [value]="purpose"
+          >
+            {{ purpose }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Notas</ion-label>
+        <ion-textarea
+          formControlName="notes"
+          placeholder="Observaciones"
+        ></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit"> Guardar animal </ion-button>
+    </div>
+  </form>
 </ion-content>
