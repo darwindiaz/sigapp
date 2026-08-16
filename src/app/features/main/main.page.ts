@@ -59,6 +59,10 @@ export class MainPage {
         this.navigationService.goTo(APP_ROUTES.createVaccination);
         break;
 
+      case MainActionCode.RegisterPaddock:
+        this.navigationService.goTo(APP_ROUTES.createPaddock);
+        break;
+
       case MainActionCode.MoveAnimal:
         this.navigationService.goTo(APP_ROUTES.createPaddockMovement);
         break;

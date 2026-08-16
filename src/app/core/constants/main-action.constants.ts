@@ -17,6 +17,11 @@ export const MAIN_ACTIONS = [
     icon: 'medkit-outline',
   },
   {
+    code: MainActionCode.RegisterPaddock,
+    text: 'Registrar potreto',
+    icon: 'map-outline',
+  },
+  {
     code: MainActionCode.MoveAnimal,
     text: 'Movimiento de potrero',
     icon: 'swap-horizontal-outline',

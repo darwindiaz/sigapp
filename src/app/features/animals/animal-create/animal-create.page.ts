@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {} from '@capacitor/core';
 
@@ -12,23 +12,26 @@ import {
   AnimalSpecies,
   AnimalStatus,
 } from 'src/app/core/models/animal.model';
+import { Paddock } from 'src/app/core/models/paddock.model';
 
 import { AnimalService } from 'src/app/core/services/animal.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
+import { PaddockServices } from 'src/app/core/services/paddock.services';
 
 @Component({
   selector: 'app-animal-create',
   templateUrl: './animal-create.page.html',
   styleUrls: ['./animal-create.page.scss'],
 })
-export class AnimalCreatePage {
+export class AnimalCreatePage implements OnInit {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private animalService: AnimalService = inject(AnimalService);
   private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
   private navegationService: NavigationService = inject(NavigationService);
+  private paddockService: PaddockServices = inject(PaddockServices);
 
   readonly backUrl = APP_ROUTES.inventory;
   readonly speciesOptions = Object.values(AnimalSpecies);
@@ -38,6 +41,8 @@ export class AnimalCreatePage {
   readonly purposeOptions = Object.values(AnimalPurpose);
 
   readonly form!: FormGroup;
+  paddocks: Paddock[] = [];
+  isLoadingPaddocks = false;
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -51,6 +56,23 @@ export class AnimalCreatePage {
       purpose: [''],
       notes: [''],
     });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.loadPaddocks();
+  }
+
+  async loadPaddocks(): Promise<void> {
+    this.isLoadingPaddocks = true;
+
+    try {
+      this.paddocks = await this.paddockService.getPaddocks('demo-farm');
+    } catch (error) {
+      console.error(error);
+      this.paddocks = [];
+    } finally {
+      this.isLoadingPaddocks = false;
+    }
   }
 
   async onSubmit(): Promise<void> {

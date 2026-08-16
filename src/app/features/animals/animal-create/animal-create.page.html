@@ -63,11 +63,35 @@
 
       <ion-item>
         <ion-label position="stacked">Potrero actual</ion-label>
-        <ion-input
+        <ion-select
           formControlName="paddockId"
-          placeholder="ID o nombre del potrero"
-        ></ion-input>
+          placeholder="Seleccionar potrero"
+        >
+          <ion-select-option value=""> Sin asignar </ion-select-option>
+
+          <ion-select-option
+            *ngFor="let paddock of paddocks"
+            [value]="paddock.id"
+          >
+            {{ paddock.name }}
+          </ion-select-option>
+        </ion-select>
       </ion-item>
+      <div>
+        <ion-item *ngIf="isLoadingPaddocks" lines="none">
+          <ion-spinner slot="start" name="crescent"></ion-spinner>
+          <ion-label>Cargando potreros...</ion-label>
+        </ion-item>
+        <ion-item
+          *ngIf="!isLoadingPaddocks && paddocks.length === 0"
+          lines="none"
+        >
+          <ion-label color="medium">
+            No hay potreros registrados. Puedes guardar el animal sin asignar
+            potrero.
+          </ion-label>
+        </ion-item>
+      </div>
 
       <ion-item>
         <ion-label position="stacked">Propósito</ion-label>

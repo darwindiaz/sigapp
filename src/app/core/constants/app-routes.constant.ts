@@ -10,4 +10,5 @@ export const APP_ROUTES = {
   createBirth: '/main/births/create',
   createVaccination: '/main/health/vaccination/create',
   createPaddockMovement: '/main/paddocks/movement/create',
+  createPaddock: '/main/paddocks/create',
 } as const;

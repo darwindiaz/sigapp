@@ -3,11 +3,10 @@ export interface Paddock {
   farmId: string;
   name: string;
   area?: number;
-  pastureType?: string;
+  areaUnit?: PaddockAreaUnit;
+  capacityAnimals?: number;
   status: PaddockStatus;
-  lastOccupationDate?: Date;
-  nextAvailableDate?: Date;
-  notes?: string; //revision[]
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,4 +16,9 @@ export enum PaddockStatus {
   Occupied = 'occupied',
   Resting = 'resting',
   Maintenance = 'maintenance',
+}
+
+export enum PaddockAreaUnit {
+  SquareMeters = 'square-meters',
+  Hectares = 'hectares',
 }

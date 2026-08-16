@@ -30,16 +30,28 @@ const routes: Routes = [
       {
         path: 'health/vaccination/create',
         loadChildren: () =>
-          import(
-            '../health/vaccination-create/vaccination-create.module'
-          ).then((m) => m.VaccinationCreateModule),
+          import('../health/vaccination-create/vaccination-create.module').then(
+            (m) => m.VaccinationCreateModule,
+          ),
+      },
+      {
+        path: 'paddocks',
+        loadChildren: () =>
+          import('../paddocks/paddocks.module').then((m) => m.PaddocksModule),
       },
       {
         path: 'paddocks/movement/create',
         loadChildren: () =>
-          import(
-            '../paddocks/movement-create/paddock-movement-create.module'
-          ).then((m) => m.PaddockMovementCreateModule),
+          import('../paddocks/movement-create/paddock-movement-create.module').then(
+            (m) => m.PaddockMovementCreateModule,
+          ),
+      },
+      {
+        path: 'paddocks/create',
+        loadChildren: () =>
+          import('../paddocks/paddock-create/paddock-create.module').then(
+            (m) => m.PaddockCreateModule,
+          ),
       },
       {
         path: 'inventory',
@@ -47,11 +59,6 @@ const routes: Routes = [
           import('../inventory/inventory.module').then(
             (m) => m.InventoryModule,
           ),
-      },
-      {
-        path: 'paddocks',
-        loadChildren: () =>
-          import('../paddocks/paddocks.module').then((m) => m.PaddocksModule),
       },
       {
         path: 'health',

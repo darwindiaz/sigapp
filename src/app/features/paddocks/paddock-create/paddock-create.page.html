@@ -1,0 +1,69 @@
+<app-header title="Registrar potrero" [backButton]="backUrl"></app-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nombre del potrero</ion-label>
+        <ion-input
+          formControlName="name"
+          placeholder="Ej: Potrero 1"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Área</ion-label>
+        <ion-input
+          type="number"
+          formControlName="area"
+          placeholder="Ej: 2.5"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Unidad de área</ion-label>
+        <ion-select formControlName="areaUnit">
+          <ion-select-option
+            *ngFor="let areaUnit of areaUnitOptions"
+            [value]="areaUnit"
+          >
+            {{ areaUnit }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Capacidad estimada</ion-label>
+        <ion-input
+          type="number"
+          formControlName="capacityAnimals"
+          placeholder="Número de animales"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Estado</ion-label>
+        <ion-select formControlName="status">
+          <ion-select-option
+            *ngFor="let status of statusOptions"
+            [value]="status"
+          >
+            {{ status }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Notas</ion-label>
+        <ion-textarea
+          formControlName="notes"
+          placeholder="Observaciones del potrero"
+        ></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit"> Guardar potrero </ion-button>
+    </div>
+  </form>
+</ion-content>

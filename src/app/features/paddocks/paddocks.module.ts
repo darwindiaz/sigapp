@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 import { PaddocksRoutingModule } from './paddocks-routing.module';
 import { PaddocksPage } from './paddocks.page';
+import { PaddockServices } from 'src/app/core/services/paddock.services';
 
 @NgModule({
   declarations: [PaddocksPage],

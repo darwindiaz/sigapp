@@ -7,10 +7,46 @@
         <ion-card>
           <ion-card-header>
             <ion-card-title>Gestión de potreros</ion-card-title>
-            <ion-card-subtitle>Placeholder funcional</ion-card-subtitle>
+            <ion-card-subtitle>
+              Potreros registrados en la finca
+            </ion-card-subtitle>
           </ion-card-header>
+
           <ion-card-content>
-            Aquí se registrarán potreros, capacidad estimada, estado del pasto y movimientos de animales.
+            <ion-item *ngIf="isLoading" lines="none">
+              <ion-spinner slot="start" name="crescent"></ion-spinner>
+              <ion-label>Cargando potreros...</ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="!isLoading && paddocks.length === 0" lines="none">
+              <ion-label> No hay potreros registrados todavía. </ion-label>
+            </ion-item>
+
+            <ion-list *ngIf="!isLoading && paddocks.length > 0">
+              <ion-item
+                *ngFor="let paddock of paddocks"
+                [button]="true"
+                lines="full"
+              >
+                <ion-icon
+                  name="map-outline"
+                  slot="start"
+                  color="success"
+                ></ion-icon>
+
+                <ion-label>
+                  <h2>{{ paddock.name }}</h2>
+                  <p>Estado: {{ paddock.status }}</p>
+                  <p>
+                    Área: {{ paddock.area || '-' }} {{ paddock.areaUnit || '' }}
+                  </p>
+                </ion-label>
+
+                <ion-note slot="end">
+                  Cap: {{ paddock.capacityAnimals || '-' }}
+                </ion-note>
+              </ion-item>
+            </ion-list>
           </ion-card-content>
         </ion-card>
       </ion-col>
