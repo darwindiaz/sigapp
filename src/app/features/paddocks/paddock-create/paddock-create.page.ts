@@ -9,7 +9,7 @@ import {
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
-import { PaddockServices } from 'src/app/core/services/paddock.services';
+import { PaddockService } from 'src/app/core/services/paddock.service';
 
 @Component({
   selector: 'app-paddock-create',
@@ -18,7 +18,7 @@ import { PaddockServices } from 'src/app/core/services/paddock.services';
 })
 export class PaddockCreatePage {
   private formBuilder = inject(FormBuilder);
-  private paddockService = inject(PaddockServices);
+  private paddockService = inject(PaddockService);
   private loadingService = inject(LoadingService);
   private messageService = inject(MessageService);
   private navigationService = inject(NavigationService);

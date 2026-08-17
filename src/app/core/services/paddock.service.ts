@@ -5,7 +5,7 @@ import { Paddock } from '../models/paddock.model';
 @Injectable({
   providedIn: 'root',
 })
-export class PaddockServices {
+export class PaddockService {
   private firebaseService: FirebaseService = inject(FirebaseService);
 
   async createPaddock(farmId: string, paddock: Paddock): Promise<void> {

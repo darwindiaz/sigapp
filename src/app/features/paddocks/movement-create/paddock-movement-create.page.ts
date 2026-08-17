@@ -11,17 +11,17 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 import { PaddockMovementService } from 'src/app/core/services/paddock-movement.service';
-import { PaddockServices } from 'src/app/core/services/paddock.services';
+import { PaddockService } from 'src/app/core/services/paddock.service';
 
 @Component({
   selector: 'app-paddock-movement-create',
   templateUrl: './paddock-movement-create.page.html',
   styleUrls: ['./paddock-movement-create.page.scss'],
 })
-export class PaddockMovementCreatePage implements OnInit{
+export class PaddockMovementCreatePage implements OnInit {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private animalService: AnimalService = inject(AnimalService);
-  private paddockService: PaddockServices = inject(PaddockServices);
+  private paddockService: PaddockService = inject(PaddockService);
   private paddockMovementServices: PaddockMovementService = inject(
     PaddockMovementService,
   );

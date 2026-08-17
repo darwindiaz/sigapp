@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
+
 import { Paddock } from 'src/app/core/models/paddock.model';
 import { NavigationService } from 'src/app/core/services/navigation.service';
-import { PaddockServices } from 'src/app/core/services/paddock.services';
+import { PaddockService } from 'src/app/core/services/paddock.service';
 
 @Component({
   selector: 'app-paddocks',
@@ -11,7 +11,7 @@ import { PaddockServices } from 'src/app/core/services/paddock.services';
 })
 export class PaddocksPage implements OnInit {
   private navigationService = inject(NavigationService);
-  private paddockService = inject(PaddockServices);
+  private paddockService = inject(PaddockService);
 
   paddocks: Paddock[] = [];
   isLoading = false;

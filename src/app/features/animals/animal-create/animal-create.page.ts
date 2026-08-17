@@ -18,7 +18,7 @@ import { AnimalService } from 'src/app/core/services/animal.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
-import { PaddockServices } from 'src/app/core/services/paddock.services';
+import { PaddockService } from 'src/app/core/services/paddock.service';
 
 @Component({
   selector: 'app-animal-create',
@@ -31,7 +31,7 @@ export class AnimalCreatePage implements OnInit {
   private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
   private navegationService: NavigationService = inject(NavigationService);
-  private paddockService: PaddockServices = inject(PaddockServices);
+  private paddockService: PaddockService = inject(PaddockService);
 
   readonly backUrl = APP_ROUTES.inventory;
   readonly speciesOptions = Object.values(AnimalSpecies);
