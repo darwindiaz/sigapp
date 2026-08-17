@@ -4,19 +4,17 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomePage implements OnInit {
   private navigationService = inject(NavigationService);
 
   ngOnInit() {
     console.log();
   }
 
-  onClick(event: number) {
-    if (event === 1) {
-      void this.navigationService.goTo(APP_ROUTES.inventory);
-    }
+  async goToBirths() {
+    await this.navigationService.goTo(APP_ROUTES.births);
   }
 }

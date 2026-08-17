@@ -15,11 +15,12 @@ lo minimo indispensable esto es un mvp
 No realizar cambios, ni cambios de archivo o desarrollo, me los indicaras y vamos a ir paso a paso
 
 
-
+Mejoras
 * vacunacion->convertir vacuna/ producto en parametrizable
 * vacunacion->dosis crear selector de unidades, (ml, cm3)
 * vacunacion->agregar a formulario el tipo de evento, dejar predeterminado vacuna,
 * vacunacion->evaluar el proposito de colocar la fecha proxima dosis, que sea campo opcional al final
+* birth -> Madre/Padres filtrar por sexo
 * crear la granja o finca
 * crear propietario o datos del usuario
 * condicionar si no existe granja/finca no hacer nada
@@ -27,3 +28,6 @@ No realizar cambios, ni cambios de archivo o desarrollo, me los indicaras y vamo
 * Normailizacion de fecha, todas en el mismo formato y con ubiccacion bogota/gtm-5
 * cambiar todo promise.all a rxjs
 * prueba a los buscadores con caracteres especiales
+* Mejoras con signal y migrar angular 22;
+* Cambiar todos los estados, enum a español
+* todos los accesos a firebase deberían hacerse en batch/transaction

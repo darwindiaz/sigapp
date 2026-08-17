@@ -6,9 +6,16 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 import { BirthCreateRoutingModule } from './birth-create-routing.module';
 import { BirthCreatePage } from './birth-create.page';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [BirthCreatePage],
-  imports: [CommonModule, IonicModule, SharedModule, BirthCreateRoutingModule],
+  imports: [
+    CommonModule,
+    IonicModule,
+    ReactiveFormsModule,
+    SharedModule,
+    BirthCreateRoutingModule,
+  ],
 })
 export class BirthCreateModule {}

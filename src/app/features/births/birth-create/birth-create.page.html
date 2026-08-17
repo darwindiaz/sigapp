@@ -1,19 +1,118 @@
 <app-header title="Registrar nacimiento" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col size="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Nuevo nacimiento</ion-card-title>
-            <ion-card-subtitle>Formulario pendiente</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            Próximo paso: crear el formulario mínimo para madre, fecha, sexo, peso inicial y observaciones.
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="ion-padding">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-list>
+        <ion-item>
+          <ion-select
+            label="Madre"
+            label-placement="stacked"
+            formControlName="motherId"
+            interface="popover"
+          >
+            <ion-select-option
+              *ngFor="let animal of animals"
+              [value]="animal.id"
+            >
+              {{ animal.code || animal.id }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-select
+            label="Padre opcional"
+            label-placement="stacked"
+            formControlName="fatherId"
+            interface="popover"
+          >
+            <ion-select-option value="">Sin padre registrado</ion-select-option>
+
+            <ion-select-option
+              *ngFor="let animal of animals"
+              [value]="animal.id"
+            >
+              {{ animal.code || animal.id }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Código de la cría"
+            label-placement="stacked"
+            formControlName="calfCode"
+            placeholder="Ej: T-001"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            type="date"
+            label="Fecha de nacimiento"
+            label-placement="stacked"
+            formControlName="date"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-select
+            label="Sexo"
+            label-placement="stacked"
+            formControlName="sex"
+            interface="popover"
+          >
+            <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
+              {{ sex }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-select
+            label="Estado"
+            label-placement="stacked"
+            formControlName="status"
+            interface="popover"
+          >
+            <ion-select-option
+              *ngFor="let status of statusOptions"
+              [value]="status"
+            >
+              {{ status }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            type="number"
+            label="Peso inicial kg"
+            label-placement="stacked"
+            formControlName="weight"
+            placeholder="Ej: 32"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-textarea
+            label="Notas"
+            label-placement="stacked"
+            formControlName="notes"
+            placeholder="Observaciones del nacimiento"
+          ></ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <ion-button
+        expand="block"
+        color="success"
+        type="submit"
+        [disabled]="form.invalid || !animals.length"
+      >
+        Guardar nacimiento
+      </ion-button>
+    </form>
+  </div>
 </ion-content>

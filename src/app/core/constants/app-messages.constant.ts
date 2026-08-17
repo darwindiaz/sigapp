@@ -53,4 +53,14 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     text: 'Primero debes registrar animales.',
     type: AppMessageType.Warning,
   },
+
+  [AppMessageCode.BirthCreated]: {
+    text: 'Nacimiento registrado correctamente.',
+    type: AppMessageType.Success,
+  },
+
+  [AppMessageCode.BirthCreateError]: {
+    text: 'No se pudo registrar el nacimiento.',
+    type: AppMessageType.Danger,
+  },
 };

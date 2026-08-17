@@ -11,4 +11,6 @@ export enum AppMessageCode {
   VaccinationCreated = 'VACCINATION-CREATED',
   VaccinationCreateError = 'VACCINATION-CREATED-ERROR',
   AnimalsRequired = 'ANIMALS-REQUIRED',
+  BirthCreated = 'BIRTH-CREATED',
+  BirthCreateError = 'BIRTH-CREATE-ERROR',
 }
