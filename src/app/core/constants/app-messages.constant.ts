@@ -29,7 +29,7 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
   },
   [AppMessageCode.AnimalCreated]: {
     text: 'Animal creado exitosamente',
-    type: AppMessageType.Danger,
+    type: AppMessageType.Success,
   },
   [AppMessageCode.DiffPaddock]: {
     text: 'El potrero destino debe ser diferente al actual.',

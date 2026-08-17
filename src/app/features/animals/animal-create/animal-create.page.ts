@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {} from '@capacitor/core';
 
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
@@ -30,7 +29,7 @@ export class AnimalCreatePage implements OnInit {
   private animalService: AnimalService = inject(AnimalService);
   private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
-  private navegationService: NavigationService = inject(NavigationService);
+  private navigationService: NavigationService = inject(NavigationService);
   private paddockService: PaddockService = inject(PaddockService);
 
   readonly backUrl = APP_ROUTES.inventory;
@@ -90,9 +89,9 @@ export class AnimalCreatePage implements OnInit {
       await this.animalService.createAnimal(animal.farmId, animal);
       await this.messageService.showMessage(AppMessageCode.AnimalCreated);
 
-      this.form.reset({ active: AnimalStatus.Active });
+      this.form.reset({ status: AnimalStatus.Active });
 
-      await this.navegationService.goTo(APP_ROUTES.inventory);
+      await this.navigationService.goTo(APP_ROUTES.inventory);
     } catch (error) {
       console.error(error);
       await this.messageService.showMessage(AppMessageCode.UnexpectedError);

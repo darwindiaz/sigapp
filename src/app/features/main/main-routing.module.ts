@@ -35,11 +35,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'paddocks',
-        loadChildren: () =>
-          import('../paddocks/paddocks.module').then((m) => m.PaddocksModule),
-      },
-      {
         path: 'paddocks/movement/create',
         loadChildren: () =>
           import('../paddocks/movement-create/paddock-movement-create.module').then(
@@ -59,6 +54,11 @@ const routes: Routes = [
           import('../inventory/inventory.module').then(
             (m) => m.InventoryModule,
           ),
+      },
+      {
+        path: 'paddocks',
+        loadChildren: () =>
+          import('../paddocks/paddocks.module').then((m) => m.PaddocksModule),
       },
       {
         path: 'health',

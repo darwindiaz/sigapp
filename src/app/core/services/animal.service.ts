@@ -25,7 +25,7 @@ export class AnimalService {
     animalId: string,
     animal: Partial<Animal>,
   ): Promise<void> {
-    const path = `farms/${farmId}/animals/${animal.id}`;
+    const path = `farms/${farmId}/animals/${animalId}`;
 
     await this.firebaseService.updateDocument(path, animal);
   }
