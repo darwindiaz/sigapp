@@ -8,6 +8,7 @@ import {
   collection,
   query,
   Firestore,
+  updateDoc,
 } from '@angular/fire/firestore';
 import {
   uploadString,
@@ -65,6 +66,10 @@ export class FirebaseService {
 
   addDocument(path: string, data: any): Promise<any> {
     return addDoc(collection(this.firestore, path), data);
+  }
+
+  updateDocument(path: string, data: Partial<unknown>): Promise<void> {
+    return updateDoc(doc(this.firestore, path), data);
   }
 
   /*Almacenamiento */

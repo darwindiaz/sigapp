@@ -19,4 +19,14 @@ export class AnimalService {
 
     return await this.firebaseService.getCollection<Animal>(path);
   }
+
+  async updateAnimal(
+    farmId: string,
+    animalId: string,
+    animal: Partial<Animal>,
+  ): Promise<void> {
+    const path = `farms/${farmId}/animals/${animal.id}`;
+
+    await this.firebaseService.updateDocument(path, animal);
+  }
 }

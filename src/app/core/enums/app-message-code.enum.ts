@@ -6,4 +6,5 @@ export enum AppMessageCode {
   UnexpectedError = 'UNEXPECTED_ERROR',
   NetworkError = 'NETWORK_ERROR',
   AnimalCreated = 'ANIMAL_CREATED',
+  DiffPaddock = 'DIFF_PADDOCK',
 }
