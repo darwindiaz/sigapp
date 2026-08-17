@@ -2,7 +2,7 @@ export interface HealthEvent {
   id: string;
   farmId: string;
   animalId?: string;
-  animalIds?: string[]; //revision
+  animalIds?: string[];
   type: HealthEventType;
   product?: string;
   date: Date;

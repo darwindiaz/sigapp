@@ -31,8 +31,26 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     text: 'Animal creado exitosamente',
     type: AppMessageType.Success,
   },
+  [AppMessageCode.FarmRequired]: {
+    text: 'Primero debes registrar una Finca para realizar este proceso',
+    type: AppMessageType.Warning,
+  },
   [AppMessageCode.DiffPaddock]: {
     text: 'El potrero destino debe ser diferente al actual.',
+    type: AppMessageType.Warning,
+  },
+  [AppMessageCode.VaccinationCreated]: {
+    text: 'Vacunación registrada correctamente.',
+    type: AppMessageType.Success,
+  },
+
+  [AppMessageCode.VaccinationCreateError]: {
+    text: 'No se pudo registrar la vacunación.',
+    type: AppMessageType.Danger,
+  },
+
+  [AppMessageCode.AnimalsRequired]: {
+    text: 'Primero debes registrar animales.',
     type: AppMessageType.Warning,
   },
 };

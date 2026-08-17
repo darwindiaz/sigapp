@@ -8,6 +8,13 @@ const routes: Routes = [
     path: '',
     component: HealthPage,
   },
+  {
+    path: 'vaccination/create',
+    loadChildren: () =>
+      import('./vaccination-create/vaccination-create.module').then(
+        (m) => m.VaccinationCreateModule,
+      ),
+  },
 ];
 
 @NgModule({

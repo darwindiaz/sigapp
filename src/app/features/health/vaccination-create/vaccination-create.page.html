@@ -1,19 +1,87 @@
 <app-header title="Registrar vacunación" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col size="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Nueva vacunación</ion-card-title>
-            <ion-card-subtitle>Formulario pendiente</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            Próximo paso: crear el formulario mínimo para animal, vacuna, fecha, dosis, responsable y próxima fecha.
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="ion-padding">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-list>
+        <ion-item>
+          <ion-select
+            label="Animal"
+            label-placement="stacked"
+            formControlName="animalId"
+            interface="popover"
+          >
+            <ion-select-option
+              *ngFor="let animal of animals"
+              [value]="animal.id"
+            >
+              {{ animal.code || animal.id }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Vacuna / producto"
+            label-placement="stacked"
+            formControlName="product"
+            placeholder="Ej: Aftosa, Carbón, Triple"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            type="date"
+            label="Fecha de aplicación"
+            label-placement="stacked"
+            formControlName="date"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            type="date"
+            label="Próxima dosis"
+            label-placement="stacked"
+            formControlName="nextDate"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Dosis"
+            label-placement="stacked"
+            formControlName="dose"
+            placeholder="Ej: 2 ml"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Responsable"
+            label-placement="stacked"
+            formControlName="responsible"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-textarea
+            label="Notas"
+            label-placement="stacked"
+            formControlName="notes"
+            placeholder="Observaciones del procedimiento"
+          ></ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <ion-button
+        expand="block"
+        color="success"
+        type="submit"
+        [disabled]="form.invalid || !animals.length"
+      >
+        Guardar vacunación
+      </ion-button>
+    </form>
+  </div>
 </ion-content>
