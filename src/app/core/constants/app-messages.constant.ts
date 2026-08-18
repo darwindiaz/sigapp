@@ -63,4 +63,13 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     text: 'No se pudo registrar el nacimiento.',
     type: AppMessageType.Danger,
   },
+  [AppMessageCode.FarmCreated]: {
+    text: 'Finca creada correctamente.',
+    type: AppMessageType.Success,
+  },
+
+  [AppMessageCode.FarmCreateError]: {
+    text: 'No se pudo crear la finca.',
+    type: AppMessageType.Danger,
+  },
 };

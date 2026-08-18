@@ -1,4 +1,4 @@
 export const STORAGE_KEYS = {
   user: 'user',
-  activaFarmId: 'activeFarmId',
+  activeFarmId: 'activeFarmId',
 } as const;

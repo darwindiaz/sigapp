@@ -13,4 +13,6 @@ export enum AppMessageCode {
   AnimalsRequired = 'ANIMALS-REQUIRED',
   BirthCreated = 'BIRTH-CREATED',
   BirthCreateError = 'BIRTH-CREATE-ERROR',
+  FarmCreated = 'FARM-CREATED',
+  FarmCreateError = 'FARM-CREATE-ERROR',
 }

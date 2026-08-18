@@ -1,0 +1,70 @@
+<app-header title="Crear finca" [backButton]="backUrl"></app-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-list>
+        <ion-item>
+          <ion-input
+            label="Nombre de la finca"
+            label-placement="stacked"
+            formControlName="name"
+            placeholder="Ej: La Esperanza"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Departamento"
+            label-placement="stacked"
+            formControlName="department"
+            placeholder="Ej: Córdoba"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Municipio"
+            label-placement="stacked"
+            formControlName="municipality"
+            placeholder="Ej: Montería"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-select
+            label="Tipo de producción"
+            label-placement="stacked"
+            formControlName="productionType"
+            interface="popover"
+          >
+            <ion-select-option
+              *ngFor="let type of productionTypes"
+              [value]="type"
+            >
+              {{ type }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-textarea
+            label="Notas"
+            label-placement="stacked"
+            formControlName="notes"
+            placeholder="Observaciones generales"
+          ></ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <ion-button
+        expand="block"
+        color="success"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Guardar finca
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

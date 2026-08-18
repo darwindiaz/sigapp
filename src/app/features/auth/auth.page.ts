@@ -79,6 +79,12 @@ export class AuthPage {
       return { ok: false, message: AppMessageCode.UserNotFound };
     }
 
-    return { ok: true, data: userSnapshot.data() as User };
+    return {
+      ok: true,
+      data: {
+        uid,
+        ...(userSnapshot.data() as Omit<User, 'uid'>),
+      },
+    };
   }
 }

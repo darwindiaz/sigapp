@@ -12,4 +12,6 @@ export const APP_ROUTES = {
   createVaccination: '/main/health/vaccination/create',
   createPaddockMovement: '/main/paddocks/movement/create',
   createPaddock: '/main/paddocks/create',
+  farms: '/main/farms',
+  createFarm: '/main/farms/create',
 } as const;

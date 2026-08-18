@@ -49,11 +49,16 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'births/create',
+        path: 'farms/create',
         loadChildren: () =>
-          import('../births/birth-create/birth-create.module').then(
-            (m) => m.BirthCreateModule,
+          import('../farms/farm-create/farm-create.module').then(
+            (m) => m.FarmCreateModule,
           ),
+      },
+      {
+        path: 'farms',
+        loadChildren: () =>
+          import('../farms/farms.module').then((m) => m.FarmsModule),
       },
       {
         path: 'inventory',

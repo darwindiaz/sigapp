@@ -1,14 +1,12 @@
-import { AnimalSpecies } from './animal.model';
-
 export interface Farm {
   id: string;
-  name: string;
   ownerId: string;
-  location?: string;
-  productionType: FarmProductionType;
-  mainSpecies: AnimalSpecies[];
-  rspp?: string;
-  area?: number;
+  name: string;
+  department?: string;
+  municipality?: string;
+  productionType?: FarmProductionType;
+  notes?: string;
+  active: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,4 +16,5 @@ export enum FarmProductionType {
   Milk = 'milk',
   DualPurpose = 'dual-purpose',
   Breeding = 'breeding',
+  Other = 'other',
 }
