@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { User } from 'firebase/auth';
+import { User } from 'src/app/core/models/user.model';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { STORAGE_KEYS } from 'src/app/core/constants/storage-keys.constant';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
@@ -69,8 +69,9 @@ export class FarmsPage implements OnInit {
   }
 
   async setActiveFarm(farm: Farm): Promise<void> {
-    await this.farmContextService.setActiveFarmId(farm.id);
+    await this.farmContextService.setActiveFarm(farm);
     this.activeFarmId = farm.id;
+    await this.navigationService.goTo(APP_ROUTES.home);
   }
 
   async goToCreateFarm(): Promise<void> {

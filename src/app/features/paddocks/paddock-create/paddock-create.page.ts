@@ -6,6 +6,7 @@ import {
   PaddockAreaUnit,
   PaddockStatus,
 } from 'src/app/core/models/paddock.model';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
@@ -16,17 +17,18 @@ import { PaddockService } from 'src/app/core/services/paddock.service';
   templateUrl: './paddock-create.page.html',
   styleUrls: ['./paddock-create.page.scss'],
 })
-export class PaddockCreatePage {
-  private formBuilder = inject(FormBuilder);
-  private paddockService = inject(PaddockService);
-  private loadingService = inject(LoadingService);
-  private messageService = inject(MessageService);
-  private navigationService = inject(NavigationService);
+export class PaddockCreatePage implements OnInit {
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private paddockService: PaddockService = inject(PaddockService);
+  private loadingService: LoadingService = inject(LoadingService);
+  private messageService: MessageService = inject(MessageService);
+  private navigationService: NavigationService = inject(NavigationService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.paddocks;
-
   readonly statusOptions = Object.values(PaddockStatus);
   readonly areaUnitOptions = Object.values(PaddockAreaUnit);
+  private farmId: string | null = null;
 
   readonly form = this.formBuilder.group({
     name: ['', [Validators.required]],
@@ -37,9 +39,22 @@ export class PaddockCreatePage {
     notes: [''],
   });
 
+  async ngOnInit(): Promise<void> {
+    this.farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+    }
+  }
+
   async onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
+
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
       return;
     }
 
@@ -47,9 +62,9 @@ export class PaddockCreatePage {
     await loading.present();
 
     try {
-      const paddock = this.buildPaddock();
+      const paddock = this.buildPaddock(this.farmId);
 
-      await this.paddockService.createPaddock(paddock.farmId, paddock);
+      await this.paddockService.createPaddock(this.farmId, paddock);
       this.navigationService.goTo(APP_ROUTES.paddocks);
     } catch (error) {
       console.error(error);
@@ -58,13 +73,13 @@ export class PaddockCreatePage {
     }
   }
 
-  private buildPaddock(): Paddock {
+  private buildPaddock(farmId: string): Paddock {
     const now = new Date();
     const formValue = this.form.getRawValue();
 
     return {
       id: crypto.randomUUID(),
-      farmId: 'demo-farm',
+      farmId,
       name: formValue.name ?? '',
       area: formValue.area ? Number(formValue.area) : undefined,
       areaUnit: formValue.areaUnit as PaddockAreaUnit,

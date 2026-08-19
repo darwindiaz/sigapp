@@ -7,6 +7,7 @@ import { Animal } from 'src/app/core/models/animal.model';
 import { PaddockMovement } from 'src/app/core/models/paddock-movement.model';
 import { Paddock } from 'src/app/core/models/paddock.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
@@ -28,9 +29,10 @@ export class PaddockMovementCreatePage implements OnInit {
   private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
   private navigationService: NavigationService = inject(NavigationService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.paddocks;
-
+  private farmId: string | null = null;
   animals: Animal[] = [];
   paddocks: Paddock[] = [];
   selectedAnimal?: Animal;
@@ -46,14 +48,23 @@ export class PaddockMovementCreatePage implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
+    this.farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     await this.loadData();
   }
 
   private async loadData(): Promise<void> {
-    const farmId = 'demo-farm';
+    if (!this.farmId) {
+      return;
+    }
     const [animals, paddocks] = await Promise.all([
-      this.animalService.getAnimals(farmId),
-      this.paddockService.getPaddocks(farmId),
+      this.animalService.getAnimals(this.farmId),
+      this.paddockService.getPaddocks(this.farmId),
     ]);
 
     this.animals = animals;
@@ -75,6 +86,11 @@ export class PaddockMovementCreatePage implements OnInit {
       return;
     }
 
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     const formValue = this.form.getRawValue();
     const fromPaddockId = this.selectedAnimal.paddockId;
     const toPaddockId = formValue.toPaddockId ?? '';
@@ -93,7 +109,7 @@ export class PaddockMovementCreatePage implements OnInit {
 
       const movement: PaddockMovement = {
         id: crypto.randomUUID(),
-        farmId: 'demo-farm',
+        farmId: this.farmId,
         animalId: this.selectedAnimal.id,
         fromPaddockId,
         toPaddockId,
@@ -109,7 +125,7 @@ export class PaddockMovementCreatePage implements OnInit {
       );
 
       await this.animalService.updateAnimal(
-        'demo-farm',
+        this.farmId,
         this.selectedAnimal.id,
         {
           paddockId: toPaddockId,

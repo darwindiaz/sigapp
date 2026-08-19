@@ -9,6 +9,7 @@ import {
   HealthEventType,
 } from 'src/app/core/models/health-event.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { HealthEventService } from 'src/app/core/services/health-event.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
@@ -26,9 +27,10 @@ export class VaccinationCreatePage implements OnInit {
   private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
   private navigationService: NavigationService = inject(NavigationService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.health;
-  readonly farmId = 'demo-farm';
+  private farmId: string | null = null;
   animals: Animal[] = [];
 
   readonly form = this.formBuilder.group({
@@ -42,10 +44,20 @@ export class VaccinationCreatePage implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
+    this.farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     await this.loadAnimals();
   }
 
   async loadAnimals() {
+    if (!this.farmId) {
+      return;
+    }
     this.animals = await this.animalService.getAnimals(this.farmId);
   }
 
@@ -59,6 +71,11 @@ export class VaccinationCreatePage implements OnInit {
       return;
     }
 
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     if (!this.animals.length) {
       await this.messageService.showMessage(AppMessageCode.AnimalsRequired);
       return;
@@ -68,7 +85,7 @@ export class VaccinationCreatePage implements OnInit {
     await loading.present();
 
     try {
-      const healthEvent = this.buildHealtEvent();
+      const healthEvent = this.buildHealtEvent(this.farmId);
 
       await this.healthEventService.createHealthEvent(this.farmId, healthEvent);
 
@@ -85,12 +102,12 @@ export class VaccinationCreatePage implements OnInit {
     }
   }
 
-  private buildHealtEvent(): HealthEvent {
+  private buildHealtEvent(farmId: string): HealthEvent {
     const formValue = this.form.getRawValue();
 
     return {
       id: crypto.randomUUID(),
-      farmId: this.farmId,
+      farmId,
       animalId: formValue.animalId!,
       type: HealthEventType.Vaccine,
       product: formValue.product!,

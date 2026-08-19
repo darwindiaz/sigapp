@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
@@ -13,6 +13,7 @@ import {
 import { Birth, BirthStatus } from 'src/app/core/models/birth.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
 import { BirthService } from 'src/app/core/services/birth.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
@@ -22,19 +23,19 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
   templateUrl: './birth-create.page.html',
   styleUrls: ['./birth-create.page.scss'],
 })
-export class BirthCreatePage {
+export class BirthCreatePage implements OnInit {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private animalService: AnimalService = inject(AnimalService);
   private birthService: BirthService = inject(BirthService);
   private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
   private navigationService: NavigationService = inject(NavigationService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.home;
-  readonly farmId = 'demo-farm';
   readonly sexOptions = Object.values(AnimalSex);
   readonly statusOptions = Object.values(BirthStatus);
-
+  private farmId: string | null = null;
   animals: Animal[] = [];
 
   readonly form = this.formBuilder.group({
@@ -49,16 +50,32 @@ export class BirthCreatePage {
   });
 
   async ngOnInit(): Promise<void> {
+    this.farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     await this.loadAnimals();
   }
 
   async loadAnimals(): Promise<void> {
+    if (!this.farmId) {
+      return;
+    }
+
     this.animals = await this.animalService.getAnimals(this.farmId);
   }
 
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
+
+    if (!this.farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
       return;
     }
 
@@ -71,8 +88,8 @@ export class BirthCreatePage {
     await loading.present();
 
     try {
-      const calf = this.buildCalfAnimal();
-      const birth = this.buildBirth(calf.id);
+      const calf = this.buildCalfAnimal(this.farmId);
+      const birth = this.buildBirth(this.farmId, calf.id);
 
       await this.animalService.createAnimal(this.farmId, calf);
       await this.birthService.createBirth(this.farmId, birth);
@@ -87,13 +104,13 @@ export class BirthCreatePage {
     }
   }
 
-  private buildCalfAnimal(): Animal {
+  private buildCalfAnimal(farmId: string): Animal {
     const formValue = this.form.getRawValue();
     const now = new Date();
 
     return {
       id: crypto.randomUUID(),
-      farmId: this.farmId,
+      farmId,
       code: formValue.calfCode!,
       species: AnimalSpecies.Bovine,
       category: AnimalCategory.Calf,
@@ -108,13 +125,13 @@ export class BirthCreatePage {
     };
   }
 
-  private buildBirth(calfId: string): Birth {
+  private buildBirth(farmId: string, calfId: string): Birth {
     const formValue = this.form.getRawValue();
     const now = new Date();
 
     return {
       id: crypto.randomUUID(),
-      farmId: this.farmId,
+      farmId,
       motherId: formValue.motherId!,
       fatherId: formValue.fatherId || undefined,
       calfId,

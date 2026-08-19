@@ -14,7 +14,10 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ title }}</ion-title>
-    <div class="subtitle">{{ nameApp }}</div>
+
+    <div class="subtitle">
+      {{ activeFarmName ? "Finca: " + activeFarmName : nameApp }}
+    </div>
     <ion-buttons slot="end">
       <ion-button *ngIf="isSignOut" (click)="signOut()">
         <ion-icon name="power"></ion-icon>

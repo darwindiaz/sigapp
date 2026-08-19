@@ -17,6 +17,9 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { STORAGE_KEYS } from 'src/app/core/constants/storage-keys.constant';
+import { FarmService } from 'src/app/core/services/farm.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
+import { Farm } from 'src/app/core/models/farm.model';
 
 @Component({
   selector: 'app-auth',
@@ -24,20 +27,20 @@ import { STORAGE_KEYS } from 'src/app/core/constants/storage-keys.constant';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage {
-  formAuth: FormGroup;
   private firebaseService: FirebaseService = inject(FirebaseService);
   private messageService: MessageService = inject(MessageService);
-  private loadingService = inject(LoadingService);
-  private navigationService = inject(NavigationService);
-  private storageService = inject(StorageService);
+  private loadingService: LoadingService = inject(LoadingService);
+  private navigationService: NavigationService = inject(NavigationService);
+  private storageService: StorageService = inject(StorageService);
+  private farmService: FarmService = inject(FarmService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
+  private formBuilder: FormBuilder = inject(FormBuilder);
 
-  constructor(fb: FormBuilder) {
-    this.formAuth = fb.group({
-      uid: new FormControl(''),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-    });
-  }
+  formAuth: FormGroup = this.formBuilder.group({
+    uid: new FormControl(''),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+  });
 
   async onSubmit() {
     if (!this.formAuth.valid) {
@@ -61,7 +64,7 @@ export class AuthPage {
       }
 
       await this.storageService.set(STORAGE_KEYS.user, userResult.data);
-      await this.navigationService.goTo(APP_ROUTES.home);
+      await this.resolveFarmContext(userResult.data);
       this.formAuth.reset();
     } catch (error) {
       console.error(error);
@@ -86,5 +89,29 @@ export class AuthPage {
         ...(userSnapshot.data() as Omit<User, 'uid'>),
       },
     };
+  }
+
+  private async resolveFarmContext(user: User): Promise<void> {
+    const farms = await this.farmService.getFarmsByOwner(user.uid);
+
+    if (!farms.length) {
+      await this.farmContextService.clearActiveFarm();
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
+    const activeFarmId = await this.farmContextService.getActiveFarmId();
+    const activeFarm = this.getValidActiveFarm(farms, activeFarmId);
+
+    await this.farmContextService.setActiveFarm(activeFarm);
+    await this.navigationService.goTo(APP_ROUTES.home);
+  }
+
+  private getValidActiveFarm(farms: Farm[], activeFarmId: string | null) {
+    if (!activeFarmId) {
+      return farms[0];
+    }
+
+    return farms.find((farm) => farm.id === activeFarmId) || farms[0];
   }
 }

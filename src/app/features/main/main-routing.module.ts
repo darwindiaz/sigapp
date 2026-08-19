@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainPage } from './main.page';
+import { farmRequiredGuard } from 'src/app/core/guards/farm-required.guard';
 
 const routes: Routes = [
   {
@@ -62,6 +63,7 @@ const routes: Routes = [
       },
       {
         path: 'inventory',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../inventory/inventory.module').then(
             (m) => m.InventoryModule,
@@ -69,16 +71,19 @@ const routes: Routes = [
       },
       {
         path: 'paddocks',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../paddocks/paddocks.module').then((m) => m.PaddocksModule),
       },
       {
         path: 'births',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../births/births.module').then((m) => m.BirthsModule),
       },
       {
         path: 'health',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../health/health.module').then((m) => m.HealthModule),
       },

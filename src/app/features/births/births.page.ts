@@ -5,6 +5,7 @@ import { Animal } from 'src/app/core/models/animal.model';
 import { Birth, BirthStatus } from 'src/app/core/models/birth.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
 import { BirthService } from 'src/app/core/services/birth.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 
 @Component({
@@ -13,12 +14,12 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
   styleUrls: ['./births.page.scss'],
 })
 export class BirthsPage implements OnInit {
-  private birthService = inject(BirthService);
-  private animalService = inject(AnimalService);
-  private navigationService = inject(NavigationService);
+  private birthService: BirthService = inject(BirthService);
+  private animalService: AnimalService = inject(AnimalService);
+  private navigationService: NavigationService = inject(NavigationService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.home;
-  readonly farmId = 'demo-farm';
 
   births: Birth[] = [];
   animals: Animal[] = [];
@@ -35,21 +36,33 @@ export class BirthsPage implements OnInit {
   }
 
   async loadBirths(): Promise<void> {
+    const farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
     this.isLoading = true;
 
-    const [births, animals] = await Promise.all([
-      this.birthService.getBirths(this.farmId),
-      this.animalService.getAnimals(this.farmId),
-    ]);
+    try {
+      const [births, animals] = await Promise.all([
+        this.birthService.getBirths(farmId),
+        this.animalService.getAnimals(farmId),
+      ]);
 
-    this.births = births;
-    this.animals = animals;
-    console.log('dd', births, animals);
-    this.animalLabelById = new Map(
-      this.animals.map((animal) => [animal.id, animal.code || animal.id]),
-    );
+      this.births = births;
+      this.animals = animals;
 
-    this.isLoading = false;
+      this.animalLabelById = new Map(
+        this.animals.map((animal) => [animal.id, animal.code || animal.id]),
+      );
+    } catch (error) {
+      console.error(error);
+      this.births = [];
+      this.animals = [];
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   async goToCreateBirth(): Promise<void> {

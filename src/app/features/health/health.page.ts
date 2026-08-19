@@ -6,6 +6,7 @@ import {
   HealthEventType,
 } from 'src/app/core/models/health-event.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { HealthEventService } from 'src/app/core/services/health-event.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 
@@ -18,9 +19,9 @@ export class HealthPage implements OnInit {
   private healthEventService: HealthEventService = inject(HealthEventService);
   private animalService: AnimalService = inject(AnimalService);
   private navigationService: NavigationService = inject(NavigationService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.home;
-  readonly farmId = 'demo-farm';
 
   healthEvents: HealthEvent[] = [];
   filteredHealthEvents: HealthEvent[] = [];
@@ -37,21 +38,36 @@ export class HealthPage implements OnInit {
   }
 
   async loadHealthEvents() {
+    const farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     this.isLoading = true;
-    const [healthEvents, animals] = await Promise.all([
-      this.healthEventService.getHealthEvents(this.farmId),
-      this.animalService.getAnimals(this.farmId),
-    ]);
+    try {
+      const [healthEvents, animals] = await Promise.all([
+        this.healthEventService.getHealthEvents(farmId),
+        this.animalService.getAnimals(farmId),
+      ]);
 
-    this.healthEvents = healthEvents;
-    this.animals = animals;
+      this.healthEvents = healthEvents;
+      this.animals = animals;
 
-    this.animalLabelById = new Map(
-      this.animals.map((animal) => [animal.id, animal.code || animal.id]),
-    );
+      this.animalLabelById = new Map(
+        this.animals.map((animal) => [animal.id, animal.code || animal.id]),
+      );
 
-    this.filteredHealthEvents = [...this.healthEvents];
-    this.isLoading = false;
+      this.filteredHealthEvents = [...this.healthEvents];
+    } catch (error) {
+      console.error(error);
+      this.healthEvents = [];
+      this.filteredHealthEvents = [];
+      this.animals = [];
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   onSearch(event: CustomEvent) {

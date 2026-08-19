@@ -31,8 +31,12 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     text: 'Animal creado exitosamente',
     type: AppMessageType.Success,
   },
+  [AppMessageCode.AnimalCreatedError]: {
+    text: 'No se pudo registrar el animal.',
+    type: AppMessageType.Success,
+  },
   [AppMessageCode.FarmRequired]: {
-    text: 'Primero debes registrar una Finca para realizar este proceso',
+    text: 'Primero debes registrar una Finca para realizar este proceso.',
     type: AppMessageType.Warning,
   },
   [AppMessageCode.DiffPaddock]: {

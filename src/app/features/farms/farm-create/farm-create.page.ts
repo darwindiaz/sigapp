@@ -59,7 +59,7 @@ export class FarmCreatePage {
       const farm = this.buildFarm(user.uid);
 
       await this.farmService.createFarm(farm);
-      await this.farmContextService.setActiveFarmId(farm.id);
+      await this.farmContextService.setActiveFarm(farm);
 
       await this.messageService.showMessage(AppMessageCode.FarmCreated);
       await this.navigationService.goTo(APP_ROUTES.home);

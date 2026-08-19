@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { Animal } from 'src/app/core/models/animal.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
+import { FarmContextService } from 'src/app/core/services/farm-context.service';
 
 import { NavigationService } from 'src/app/core/services/navigation.service';
 
@@ -15,6 +16,7 @@ type InventoryViewMode = 'list' | 'grid';
 export class InventoryPage implements OnInit {
   private navigationService: NavigationService = inject(NavigationService);
   private animalService: AnimalService = inject(AnimalService);
+  private farmContextService: FarmContextService = inject(FarmContextService);
 
   backUrl: string = APP_ROUTES.home;
   animals: Animal[] = [];
@@ -38,9 +40,16 @@ export class InventoryPage implements OnInit {
   }
 
   private async loadAnimals(): Promise<void> {
+    const farmId = await this.farmContextService.requireActiveFarmId();
+
+    if (!farmId) {
+      await this.navigationService.goTo(APP_ROUTES.createFarm);
+      return;
+    }
+
     this.isLoading = true;
     try {
-      this.animals = await this.animalService.getAnimals('demo-farm');
+      this.animals = await this.animalService.getAnimals(farmId);
     } catch (error) {
       console.error(error);
       this.animals = [];
