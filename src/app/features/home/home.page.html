@@ -1,42 +1,56 @@
 <app-header title="Inicio" [isMenuButton]="true"></app-header>
 <ion-content>
-  <ion-row>
-    <ion-col size="4" size-md="6">
-      <ion-card button (click)="goToBirths()">
-        <img alt="Fincas" src="../../../assets/img/animal.png" />
+  <ion-grid fixed class="home-grid">
+    <ion-row>
+      <ion-col size="12" size-md="4" size-lg="3">
+        <ion-card class="home-card" button (click)="goToFarms()">
+          <img
+            class="home-card__image"
+            alt="Fincas"
+            src="../../../assets/img/animal.png"
+          />
 
-        <ion-card-header>
-          <ion-card-title>Fincas</ion-card-title>
-          <ion-card-subtitle>Registro de terrenos</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content> Consulta y registra tus terrenos. </ion-card-content>
-      </ion-card>
-    </ion-col>
-    <ion-col size="4" size-md="6">
-      <ion-card button (click)="goToBirths()">
-        <img alt="Nacimientos" src="../../../assets/img/animal.png" />
+          <ion-card-header>
+            <ion-card-title>Fincas</ion-card-title>
+            <ion-card-subtitle>Registro de terrenos</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content> Consulta y registra tus terrenos. </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="4" size-lg="3">
+        <ion-card class="home-card" button (click)="goToBirths()">
+          <img
+            class="home-card__image"
+            alt="Nacimientos"
+            src="../../../assets/img/animal.png"
+          />
 
-        <ion-card-header>
-          <ion-card-title>Nacimientos</ion-card-title>
-          <ion-card-subtitle>Registro reproductivo</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          Consulta y registra nacimientos de animales.
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-    <ion-col size="4" size-md="6">
-      <ion-card button (click)="goToBirths()">
-        <img alt="Reportes" src="../../../assets/img/animal.png" />
+          <ion-card-header>
+            <ion-card-title>Nacimientos</ion-card-title>
+            <ion-card-subtitle>Registro reproductivo</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            Consulta y registra nacimientos de animales.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="4" size-lg="3">
+        <ion-card class="home-card" button (click)="goToReports()">
+          <img
+            class="home-card__image"
+            alt="Reportes"
+            src="../../../assets/img/animal.png"
+          />
 
-        <ion-card-header>
-          <ion-card-title>Reportes</ion-card-title>
-          <ion-card-subtitle>Descarga tus reportes</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          Crea reportes para ver tus numeros.
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-  </ion-row>
+          <ion-card-header>
+            <ion-card-title>Reportes</ion-card-title>
+            <ion-card-subtitle>Descarga tus reportes</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            Crea reportes para ver tus numeros.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

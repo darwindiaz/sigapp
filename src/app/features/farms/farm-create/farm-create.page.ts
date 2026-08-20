@@ -17,7 +17,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
   templateUrl: './farm-create.page.html',
   styleUrls: ['./farm-create.page.scss'],
 })
-export class FarmCreatePage {
+export class FarmCreatePage implements OnInit {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private farmService: FarmService = inject(FarmService);
   private farmContextService: FarmContextService = inject(FarmContextService);
@@ -25,8 +25,6 @@ export class FarmCreatePage {
   private messageService: MessageService = inject(MessageService);
   private navigationService: NavigationService = inject(NavigationService);
   private storageService: StorageService = inject(StorageService);
-
-  readonly backUrl = APP_ROUTES.farms;
   readonly productionTypes = Object.values(FarmProductionType);
 
   readonly form = this.formBuilder.group({
@@ -36,6 +34,12 @@ export class FarmCreatePage {
     productionType: [FarmProductionType.DualPurpose],
     notes: [''],
   });
+
+  backUrl: string | null = APP_ROUTES.farms;
+
+  async ngOnInit(): Promise<void> {
+    await this.configureBackButton();
+  }
 
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
@@ -69,6 +73,18 @@ export class FarmCreatePage {
     } finally {
       await loading.dismiss();
     }
+  }
+
+  private async configureBackButton(): Promise<void> {
+    const user = this.storageService.get<User>(STORAGE_KEYS.user);
+
+    if (!user) {
+      this.backUrl = null;
+      return;
+    }
+
+    const farms = await this.farmService.getFarmsByOwner(user.uid);
+    this.backUrl = farms.length ? APP_ROUTES.farms : null;
   }
 
   private buildFarm(ownerId: string): Farm {

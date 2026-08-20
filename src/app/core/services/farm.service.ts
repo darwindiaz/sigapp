@@ -15,17 +15,18 @@ export class FarmService {
   }
 
   async getFarmsByOwner(ownerId: string): Promise<Farm[]> {
-    const path = `farms`;
+    const famrs = await this.firebaseService.getCollectionWhere<Farm>(
+      'farms',
+      'ownerId',
+      '==',
+      ownerId,
+    );
 
-    const famrs = await this.firebaseService.getCollection<Farm>(path);
-
-    return famrs
-      .filter((farm) => farm.ownerId === ownerId)
-      .map((farm) => ({
-        ...farm,
-        createdAt: this.toDate(farm.createdAt),
-        updatedAt: this.toDate(farm.updatedAt),
-      }));
+    return famrs.map((farm) => ({
+      ...farm,
+      createdAt: this.toDate(farm.createdAt),
+      updatedAt: this.toDate(farm.updatedAt),
+    }));
   }
 
   async updateFarm(farmId: string, data: Partial<Farm>): Promise<void> {

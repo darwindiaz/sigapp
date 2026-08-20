@@ -1,0 +1,67 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function ownsFarm(farmId) {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/farms/$(farmId))
+        && get(/databases/$(database)/documents/farms/$(farmId)).data.ownerId == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow read, create, update, delete: if isSignedIn()
+        && request.auth.uid == userId;
+    }
+
+    match /farms/{farmId} {
+      allow create: if isSignedIn()
+        && request.resource.data.ownerId == request.auth.uid;
+
+      allow read, delete: if isSignedIn()
+        && resource.data.ownerId == request.auth.uid;
+
+      allow update: if isSignedIn()
+        && resource.data.ownerId == request.auth.uid
+        && request.resource.data.ownerId == resource.data.ownerId;
+
+      match /animals/{animalId} {
+        allow read: if ownsFarm(farmId);
+        allow create, update: if ownsFarm(farmId)
+          && request.resource.data.farmId == farmId;
+        allow delete: if ownsFarm(farmId);
+      }
+
+      match /paddocks/{paddockId} {
+        allow read: if ownsFarm(farmId);
+        allow create, update: if ownsFarm(farmId)
+          && request.resource.data.farmId == farmId;
+        allow delete: if ownsFarm(farmId);
+      }
+
+      match /births/{birthId} {
+        allow read: if ownsFarm(farmId);
+        allow create, update: if ownsFarm(farmId)
+          && request.resource.data.farmId == farmId;
+        allow delete: if ownsFarm(farmId);
+      }
+
+      match /healthEvents/{healthEventId} {
+        allow read: if ownsFarm(farmId);
+        allow create, update: if ownsFarm(farmId)
+          && request.resource.data.farmId == farmId;
+        allow delete: if ownsFarm(farmId);
+      }
+
+      match /paddockMovements/{movementId} {
+        allow read: if ownsFarm(farmId);
+        allow create, update: if ownsFarm(farmId)
+          && request.resource.data.farmId == farmId;
+        allow delete: if ownsFarm(farmId);
+      }
+    }
+  }
+}

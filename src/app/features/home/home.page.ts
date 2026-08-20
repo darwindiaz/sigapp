@@ -10,11 +10,17 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
 export class HomePage implements OnInit {
   private navigationService = inject(NavigationService);
 
-  ngOnInit() {
-    console.log();
+  ngOnInit() {}
+
+  async goToFarms() {
+    await this.navigationService.goTo(APP_ROUTES.farms);
   }
 
   async goToBirths() {
     await this.navigationService.goTo(APP_ROUTES.births);
+  }
+
+  async goToReports() {
+    await this.navigationService.goTo(APP_ROUTES.reports);
   }
 }

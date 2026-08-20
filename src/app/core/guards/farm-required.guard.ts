@@ -3,10 +3,10 @@ import { FarmContextService } from '../services/farm-context.service';
 import { inject } from '@angular/core';
 import { APP_ROUTES } from '../constants/app-routes.constant';
 
-export const farmRequiredGuard: CanActivateFn = (route, state) => {
+export const farmRequiredGuard: CanActivateFn = async (route, state) => {
   const farmContextService = inject(FarmContextService);
   const router = inject(Router);
-  const activeFarmId = farmContextService.getActiveFarmId();
+  const activeFarmId = await farmContextService.getActiveFarmId();
 
   if (activeFarmId) {
     return true;

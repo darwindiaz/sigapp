@@ -78,7 +78,7 @@ export class MainPage {
   }
 
   goToFarmSettings(): void {
-    console.log('Ir a finca');
+    this.navigationService.goTo(APP_ROUTES.farms);
   }
 
   goToHelp(): void {

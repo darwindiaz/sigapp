@@ -16,6 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'animals/create',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../animals/animal-create/animal-create.module').then(
             (m) => m.AnimalCreateModule,
@@ -23,6 +24,7 @@ const routes: Routes = [
       },
       {
         path: 'births/create',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../births/birth-create/birth-create.module').then(
             (m) => m.BirthCreateModule,
@@ -30,6 +32,7 @@ const routes: Routes = [
       },
       {
         path: 'health/vaccination/create',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../health/vaccination-create/vaccination-create.module').then(
             (m) => m.VaccinationCreateModule,
@@ -37,6 +40,7 @@ const routes: Routes = [
       },
       {
         path: 'paddocks/movement/create',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../paddocks/movement-create/paddock-movement-create.module').then(
             (m) => m.PaddockMovementCreateModule,
@@ -44,6 +48,7 @@ const routes: Routes = [
       },
       {
         path: 'paddocks/create',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../paddocks/paddock-create/paddock-create.module').then(
             (m) => m.PaddockCreateModule,
@@ -89,6 +94,7 @@ const routes: Routes = [
       },
       {
         path: 'reports',
+        canActivate: [farmRequiredGuard],
         loadChildren: () =>
           import('../reports/reports.module').then((m) => m.ReportsModule),
       },

@@ -9,6 +9,8 @@ import {
   query,
   Firestore,
   updateDoc,
+  WhereFilterOp,
+  where,
 } from '@angular/fire/firestore';
 import {
   uploadString,
@@ -48,6 +50,22 @@ export class FirebaseService {
   async getCollection<T>(path: string): Promise<T[]> {
     const collectionRef = collection(this.firestore, path);
     const collectionQuery = query(collectionRef);
+    const querySnapshot = await getDocs(collectionQuery);
+
+    return querySnapshot.docs.map((document) => ({
+      id: document.id,
+      ...document.data(),
+    })) as T[];
+  }
+
+  async getCollectionWhere<T>(
+    path: string,
+    field: string,
+    operator: WhereFilterOp,
+    value: unknown,
+  ): Promise<T[]> {
+    const collectionRef = collection(this.firestore, path);
+    const collectionQuery = query(collectionRef, where(field, operator, value));
     const querySnapshot = await getDocs(collectionQuery);
 
     return querySnapshot.docs.map((document) => ({
