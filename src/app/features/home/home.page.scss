@@ -9,6 +9,15 @@
   flex-direction: column;
   margin: var(--sigapp-space-2);
   overflow: hidden;
+  cursor: pointer;
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.home-card:focus-visible {
+  outline: 3px solid var(--sigapp-accent);
+  outline-offset: 2px;
 }
 
 .home-card__image {
@@ -38,4 +47,21 @@
   padding: 0 var(--sigapp-space-4) var(--sigapp-space-4);
   overflow: hidden;
   line-height: 1.35;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .home-card:hover {
+    box-shadow: var(--sigapp-shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+.home-card:active {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-card {
+    transition: none;
+  }
 }

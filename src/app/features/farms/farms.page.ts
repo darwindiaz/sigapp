@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { User } from 'src/app/core/models/user.model';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
+import { FARM_PRODUCTION_TYPE_LABELS } from 'src/app/core/constants/domain-labels.constant';
 import { STORAGE_KEYS } from 'src/app/core/constants/storage-keys.constant';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
 import { Farm } from 'src/app/core/models/farm.model';
 import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { FarmService } from 'src/app/core/services/farm.service';
-import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 import { StorageService } from 'src/app/core/services/storage.service';
@@ -16,23 +16,21 @@ import { StorageService } from 'src/app/core/services/storage.service';
   templateUrl: './farms.page.html',
   styleUrls: ['./farms.page.scss'],
 })
-export class FarmsPage implements OnInit {
+export class FarmsPage {
   private farmService: FarmService = inject(FarmService);
   private farmContextService: FarmContextService = inject(FarmContextService);
-  private loadingService: LoadingService = inject(LoadingService);
   private messageService: MessageService = inject(MessageService);
   private navigationService: NavigationService = inject(NavigationService);
   private storageService: StorageService = inject(StorageService);
 
   readonly backUrl = APP_ROUTES.home;
+  readonly productionTypeLabels = FARM_PRODUCTION_TYPE_LABELS;
 
   farms: Farm[] = [];
+  filteredFarms: Farm[] = [];
   activeFarmId: string | null = null;
-  isLoading = false;
-
-  async ngOnInit(): Promise<void> {
-    await this.loadFarms();
-  }
+  isLoading = true;
+  hasLoadError = false;
 
   async ionViewWillEnter(): Promise<void> {
     await this.loadFarms();
@@ -48,9 +46,11 @@ export class FarmsPage implements OnInit {
     }
 
     this.isLoading = true;
+    this.hasLoadError = false;
 
     try {
       this.farms = await this.farmService.getFarmsByOwner(user.uid);
+      this.filteredFarms = [...this.farms];
       this.activeFarmId = await this.farmContextService.getActiveFarmId();
 
       const activeFarmIsValid = this.farms.some(
@@ -62,6 +62,9 @@ export class FarmsPage implements OnInit {
       }
     } catch (error) {
       console.error(error);
+      this.farms = [];
+      this.filteredFarms = [];
+      this.hasLoadError = true;
       await this.messageService.showMessage(AppMessageCode.UnexpectedError);
     } finally {
       this.isLoading = false;
@@ -78,7 +81,44 @@ export class FarmsPage implements OnInit {
     await this.navigationService.goTo(APP_ROUTES.createFarm);
   }
 
+  onSearch(event: CustomEvent): void {
+    const value = this.normalizeText(event.detail.value || '');
+
+    if (!value) {
+      this.filteredFarms = [...this.farms];
+      return;
+    }
+
+    this.filteredFarms = this.farms.filter((farm) => {
+      const productionType = farm.productionType
+        ? this.productionTypeLabels[farm.productionType]
+        : '';
+      const searchableText = [
+        farm.name,
+        farm.department,
+        farm.municipality,
+        productionType,
+      ]
+        .filter(Boolean)
+        .join(' ');
+
+      return this.normalizeText(searchableText).includes(value);
+    });
+  }
+
   isActiveFarm(farm: Farm): boolean {
     return farm.id === this.activeFarmId;
+  }
+
+  trackByFarmId(_index: number, farm: Farm): string {
+    return farm.id;
+  }
+
+  private normalizeText(value: string): string {
+    return value
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
   }
 }

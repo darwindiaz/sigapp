@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
@@ -69,23 +68,15 @@ export class MainPage {
     }
   }
 
-  goToProfile(): void {
-    console.log('Ir a perfil');
-  }
-
-  goToSettings(): void {
-    console.log('Ir a configuración');
+  goToHome(): void {
+    this.navigationService.goTo(APP_ROUTES.home);
   }
 
   goToFarmSettings(): void {
     this.navigationService.goTo(APP_ROUTES.farms);
   }
 
-  goToHelp(): void {
-    console.log('Ir a ayuda');
-  }
-
-  async signOut() {
+  async signOut(): Promise<void> {
     await this.firebaseService.signOut();
     this.storageService.clear();
     await this.navigationService.goTo(APP_ROUTES.auth);

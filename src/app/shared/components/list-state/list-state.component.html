@@ -1,0 +1,30 @@
+<section
+  class="list-state"
+  [class.list-state--error]="state === 'error'"
+  [attr.role]="state === 'error' ? 'alert' : 'status'"
+  [attr.aria-live]="state === 'error' ? 'assertive' : 'polite'"
+>
+  <ion-spinner
+    *ngIf="isLoading"
+    name="crescent"
+    aria-label="Cargando"
+  ></ion-spinner>
+
+  <ion-icon
+    *ngIf="!isLoading"
+    [name]="resolvedIcon"
+    aria-hidden="true"
+  ></ion-icon>
+
+  <h2>{{ title }}</h2>
+  <p *ngIf="description">{{ description }}</p>
+
+  <ion-button
+    *ngIf="actionLabel && !isLoading"
+    type="button"
+    [fill]="state === 'error' ? 'outline' : 'solid'"
+    (click)="emitAction()"
+  >
+    {{ actionLabel }}
+  </ion-button>
+</section>

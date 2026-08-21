@@ -1,54 +1,85 @@
 <app-header title="Inventario" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <ion-grid fixed>
+  <ion-grid fixed class="list-page-grid">
     <ion-row>
       <ion-col size="12">
         <div class="inventory-toolbar">
           <ion-searchbar
             show-clear-button="always"
             placeholder="Buscar animal"
+            debounce="300"
+            [disabled]="isLoading || hasLoadError || animals.length === 0"
+            (ionInput)="onSearch($event)"
           ></ion-searchbar>
 
           <ion-segment
             [value]="viewMode"
             (ionChange)="setViewMode($event.detail.value)"
           >
-            <ion-segment-button value="list">
-              <ion-icon name="list-outline"></ion-icon>
+            <ion-segment-button value="list" aria-label="Vista de lista">
+              <ion-icon name="list-outline" aria-hidden="true"></ion-icon>
             </ion-segment-button>
 
-            <ion-segment-button value="grid">
-              <ion-icon name="grid-outline"></ion-icon>
+            <ion-segment-button value="grid" aria-label="Vista de cuadrícula">
+              <ion-icon name="grid-outline" aria-hidden="true"></ion-icon>
             </ion-segment-button>
           </ion-segment>
         </div>
       </ion-col>
       <ion-col>
-        <ion-card *ngIf="isLoading">
-          <ion-card-content>
-            <ion-item lines="none">
-              <ion-spinner slot="start" name="crescent"></ion-spinner>
-              <ion-label>Cargando animales...</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
+        <app-list-state
+          *ngIf="isLoading"
+          state="loading"
+          title="Cargando animales"
+          description="Estamos consultando el inventario de la finca."
+        ></app-list-state>
 
-        <ion-card *ngIf="!isLoading && animals.length === 0">
-          <ion-card-content>
-            No hay animales registrados todavía.
-          </ion-card-content>
-        </ion-card>
+        <app-list-state
+          *ngIf="!isLoading && hasLoadError"
+          state="error"
+          title="No pudimos cargar el inventario"
+          description="Comprueba tu conexión e inténtalo nuevamente."
+          actionLabel="Reintentar"
+          (action)="loadAnimals()"
+        ></app-list-state>
 
-        <ng-container *ngIf="!isLoading && animals.length > 0">
-          <ion-list *ngIf="viewMode === 'list'" class="animal-list">
+        <app-list-state
+          *ngIf="!isLoading && !hasLoadError && animals.length === 0"
+          state="empty"
+          icon="paw-outline"
+          title="Aún no hay animales"
+          description="Registra el primer animal para comenzar el inventario de la finca."
+          actionLabel="Registrar animal"
+          (action)="addAnimal()"
+        ></app-list-state>
+
+        <app-list-state
+          *ngIf="
+            !isLoading &&
+            !hasLoadError &&
+            animals.length > 0 &&
+            filteredAnimals.length === 0
+          "
+          state="empty"
+          icon="search-outline"
+          title="Sin resultados"
+          description="No encontramos animales que coincidan con la búsqueda."
+        ></app-list-state>
+
+        <ng-container
+          *ngIf="!isLoading && !hasLoadError && filteredAnimals.length > 0"
+        >
+          <ion-list
+            *ngIf="viewMode === 'list'"
+            class="animal-list data-list"
+          >
             <ion-item
-              *ngFor="let animal of animals"
-              [button]="true"
+              *ngFor="let animal of filteredAnimals; trackBy: trackByAnimalId"
               lines="full"
             >
-              <ion-avatar slot="start">
-                <img src="assets/img/animal.png" alt="Animal" />
+              <ion-avatar slot="start" class="livestock-avatar">
+                <ion-icon name="paw-outline" aria-hidden="true"></ion-icon>
               </ion-avatar>
 
               <ion-label>
@@ -69,29 +100,31 @@
           <ion-grid *ngIf="viewMode === 'grid'" class="animal-grid">
             <ion-row>
               <ion-col
-                *ngFor="let animal of animals"
+                *ngFor="
+                  let animal of filteredAnimals;
+                  trackBy: trackByAnimalId
+                "
                 size="12"
                 sizeSm="6"
                 sizeMd="4"
                 sizeLg="3"
               >
                 <ion-card class="animal-card">
-                  <img
-                    class="animal-card-image"
-                    src="assets/img/animal.png"
-                    alt="Animal"
-                  />
+                  <div class="animal-card-image" aria-hidden="true">
+                    <ion-icon name="paw-outline"></ion-icon>
+                  </div>
 
                   <ion-card-header>
                     <ion-card-title>{{ animal.code }}</ion-card-title>
                     <ion-card-subtitle>
-                      {{ animal.species }} · {{ animal.category }}
+                      {{ speciesLabels[animal.species] }} ·
+                      {{ categoryLabels[animal.category] }}
                     </ion-card-subtitle>
                   </ion-card-header>
 
                   <ion-card-content>
-                    <p>Sexo: {{ animal.sex }}</p>
-                    <p>Estado: {{ animal.status }}</p>
+                    <p>Sexo: {{ sexLabels[animal.sex] }}</p>
+                    <p>Estado: {{ statusLabels[animal.status] }}</p>
                     <p>Potrero: {{ animal.paddockId || '-' }}</p>
                   </ion-card-content>
                 </ion-card>
@@ -104,8 +137,12 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary" (click)="addAnimal()">
-      <ion-icon name="add"></ion-icon>
+    <ion-fab-button
+      color="primary"
+      aria-label="Registrar animal"
+      (click)="addAnimal()"
+    >
+      <ion-icon name="add" aria-hidden="true"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { Animal } from 'src/app/core/models/animal.model';
 import {
@@ -15,7 +15,7 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
   templateUrl: './health.page.html',
   styleUrls: ['./health.page.scss'],
 })
-export class HealthPage implements OnInit {
+export class HealthPage {
   private healthEventService: HealthEventService = inject(HealthEventService);
   private animalService: AnimalService = inject(AnimalService);
   private navigationService: NavigationService = inject(NavigationService);
@@ -27,17 +27,14 @@ export class HealthPage implements OnInit {
   filteredHealthEvents: HealthEvent[] = [];
   animals: Animal[] = [];
   animalLabelById = new Map<string, string>();
-  isLoading = false;
-
-  async ngOnInit(): Promise<void> {
-    await this.loadHealthEvents();
-  }
+  isLoading = true;
+  hasLoadError = false;
 
   async ionViewWillEnter(): Promise<void> {
     await this.loadHealthEvents();
   }
 
-  async loadHealthEvents() {
+  async loadHealthEvents(): Promise<void> {
     const farmId = await this.farmContextService.requireActiveFarmId();
 
     if (!farmId) {
@@ -46,6 +43,7 @@ export class HealthPage implements OnInit {
     }
 
     this.isLoading = true;
+    this.hasLoadError = false;
     try {
       const [healthEvents, animals] = await Promise.all([
         this.healthEventService.getHealthEvents(farmId),
@@ -65,13 +63,14 @@ export class HealthPage implements OnInit {
       this.healthEvents = [];
       this.filteredHealthEvents = [];
       this.animals = [];
+      this.hasLoadError = true;
     } finally {
       this.isLoading = false;
     }
   }
 
-  onSearch(event: CustomEvent) {
-    const value = event.detail.value?.toLowerCase().trim() || '';
+  onSearch(event: CustomEvent): void {
+    const value = this.normalizeText(event.detail.value || '');
 
     if (!value) {
       this.filteredHealthEvents = [...this.healthEvents];
@@ -79,10 +78,8 @@ export class HealthPage implements OnInit {
     }
 
     this.filteredHealthEvents = this.healthEvents.filter((healthEvent) => {
-      const type = this.getEventTypeLabel(healthEvent.type).toLowerCase();
-      const product = this.normalizeText(
-        healthEvent.product?.toLowerCase() || '',
-      );
+      const type = this.normalizeText(this.getEventTypeLabel(healthEvent.type));
+      const product = this.normalizeText(healthEvent.product || '');
       const animalId = this.normalizeText(healthEvent.animalId || '');
       const animalLabel = this.normalizeText(
         this.getAnimalLabel(healthEvent.animalId),
@@ -113,8 +110,12 @@ export class HealthPage implements OnInit {
       .replace(/[\u0300-\u036f]/g, '');
   }
 
-  async goToCreateVaccination() {
+  async goToCreateVaccination(): Promise<void> {
     await this.navigationService.goTo(APP_ROUTES.createVaccination);
+  }
+
+  trackByHealthEventId(_index: number, event: HealthEvent): string {
+    return event.id;
   }
 
   getEventTypeLabel(type: HealthEventType): string {

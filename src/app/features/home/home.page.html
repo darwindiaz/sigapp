@@ -1,13 +1,22 @@
 <app-header title="Inicio" [isMenuButton]="true"></app-header>
-<ion-content>
+<ion-content class="home-content">
   <ion-grid fixed class="home-grid">
     <ion-row>
       <ion-col size="12" size-md="4" size-lg="4">
-        <ion-card class="home-card" button (click)="goToFarms()">
+        <ion-card
+          class="home-card"
+          button
+          aria-label="Abrir Fincas"
+          (click)="goToFarms()"
+        >
           <img
             class="home-card__image"
-            alt="Fincas"
+            alt=""
             src="assets/img/home/farms.webp"
+            width="1600"
+            height="600"
+            decoding="async"
+            fetchpriority="high"
           />
 
           <ion-card-header>
@@ -20,11 +29,20 @@
         </ion-card>
       </ion-col>
       <ion-col size="12" size-md="4" size-lg="4">
-        <ion-card class="home-card" button (click)="goToBirths()">
+        <ion-card
+          class="home-card"
+          button
+          aria-label="Abrir Nacimientos"
+          (click)="goToBirths()"
+        >
           <img
             class="home-card__image"
-            alt="Nacimientos"
+            alt=""
             src="assets/img/home/births.webp"
+            width="1600"
+            height="600"
+            loading="lazy"
+            decoding="async"
           />
 
           <ion-card-header>
@@ -37,11 +55,20 @@
         </ion-card>
       </ion-col>
       <ion-col size="12" size-md="4" size-lg="4">
-        <ion-card class="home-card" button (click)="goToReports()">
+        <ion-card
+          class="home-card"
+          button
+          aria-label="Abrir Reportes"
+          (click)="goToReports()"
+        >
           <img
             class="home-card__image"
-            alt="Reportes"
+            alt=""
             src="assets/img/home/reports.webp"
+            width="1600"
+            height="600"
+            loading="lazy"
+            decoding="async"
           />
 
           <ion-card-header>
@@ -49,7 +76,7 @@
             <ion-card-subtitle>Descarga tus reportes</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            Crea reportes para ver tus numeros.
+            Crea reportes para consultar tus números.
           </ion-card-content>
         </ion-card>
       </ion-col>

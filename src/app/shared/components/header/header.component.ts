@@ -12,13 +12,13 @@ import { StorageService } from 'src/app/core/services/storage.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  @Input() title!: string;
-  @Input() backButton!: string;
-  @Input() isModal!: boolean;
-  @Input() isSignOut!: boolean;
-  @Input() isMenuButton!: boolean;
+  @Input() title = '';
+  @Input() backButton?: string;
+  @Input() isModal = false;
+  @Input() isSignOut = false;
+  @Input() isMenuButton = false;
 
-  nameApp: string;
+  readonly nameApp = 'SIGAPP';
   activeFarmName: string | null = null;
 
   private firebaseService: FirebaseService = inject(FirebaseService);
@@ -26,11 +26,6 @@ export class HeaderComponent implements OnInit {
   private storageService: StorageService = inject(StorageService);
   private navigationService: NavigationService = inject(NavigationService);
   private farmContextService: FarmContextService = inject(FarmContextService);
-
-  constructor() {
-    this.nameApp = 'S I G A P P';
-    this.title = '';
-  }
 
   async ngOnInit(): Promise<void> {
     this.activeFarmName = await this.farmContextService.getActiveFarmName();

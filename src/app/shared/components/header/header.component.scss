@@ -1,4 +1,31 @@
+.app-toolbar {
+  --min-height: 64px;
+  --padding-start: var(--sigapp-space-1);
+  --padding-end: var(--sigapp-space-1);
+}
+
+.header-copy {
+  padding-inline: var(--sigapp-space-4);
+}
+
+.header-title,
 .subtitle {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-title {
+  font-size: var(--sigapp-font-size-lg);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.subtitle {
+  margin-top: 2px;
   font-size: var(--sigapp-font-size-xs);
-  padding-inline: var(--sigapp-space-6);
+  font-weight: 400;
+  line-height: 1.2;
+  opacity: 0.9;
 }

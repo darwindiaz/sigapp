@@ -3,8 +3,34 @@
 }
 
 .main-tab-bar {
-  height: 72px;
+  --background: var(--sigapp-surface);
+  --border: 1px solid var(--sigapp-border);
+
+  height: calc(72px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
   position: relative;
+  box-shadow: 0 -2px 10px rgba(23, 35, 29, 0.06);
+}
+
+.main-tab-bar ion-tab-button {
+  --color: var(--sigapp-text-muted);
+  --color-selected: var(--sigapp-primary);
+  --padding-start: var(--sigapp-space-1);
+  --padding-end: var(--sigapp-space-1);
+
+  min-width: 0;
+}
+
+.main-tab-bar ion-icon {
+  font-size: 22px;
+}
+
+.main-tab-bar ion-label {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: var(--sigapp-font-size-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .main-action-placeholder {
@@ -13,7 +39,6 @@
 
 .main-action-placeholder ion-label {
   margin-top: 34px;
-  font-size: var(--sigapp-font-size-xs);
 }
 
 .main-action-fab {
@@ -32,6 +57,23 @@
   --box-shadow: var(--sigapp-shadow-md);
 }
 
+.main-action-fab ion-icon {
+  font-size: 28px;
+}
+
+ion-menu {
+  --width: min(84vw, 320px);
+}
+
+.side-menu-toolbar {
+  --min-height: 64px;
+}
+
+.side-menu-title {
+  font-size: var(--sigapp-font-size-xl);
+  font-weight: 700;
+}
+
 .side-menu-content {
   min-height: 100%;
   display: flex;
@@ -46,6 +88,34 @@
 
 .side-menu-list ion-item,
 .side-menu-footer ion-item {
+  --background: var(--sigapp-surface);
   --inner-border-width: 0 0 1px 0;
   --border-color: var(--sigapp-border);
+
+  min-height: 52px;
+  font-size: var(--sigapp-font-size-md);
+}
+
+.side-menu-list ion-icon,
+.side-menu-footer ion-icon {
+  color: var(--sigapp-primary);
+  font-size: 22px;
+}
+
+.side-menu-footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.side-menu-footer .sign-out-item {
+  --color: var(--sigapp-danger);
+}
+
+.side-menu-footer .sign-out-item ion-icon {
+  color: var(--sigapp-danger);
+}
+
+@media (max-width: 380px) {
+  .main-tab-bar ion-label {
+    font-size: 11px;
+  }
 }

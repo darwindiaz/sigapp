@@ -1,0 +1,47 @@
+.list-state {
+  min-height: 220px;
+  max-width: 480px;
+  margin: var(--sigapp-space-4) auto;
+  padding: var(--sigapp-space-8) var(--sigapp-space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.list-state ion-icon {
+  margin-bottom: var(--sigapp-space-3);
+  color: var(--sigapp-primary);
+  font-size: 48px;
+}
+
+.list-state ion-spinner {
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--sigapp-space-4);
+  color: var(--sigapp-primary);
+}
+
+.list-state h2 {
+  margin: 0;
+  color: var(--sigapp-text);
+  font-size: var(--sigapp-font-size-xl);
+  line-height: 1.3;
+}
+
+.list-state p {
+  max-width: 42ch;
+  margin: var(--sigapp-space-2) 0 0;
+  color: var(--sigapp-text-muted);
+  font-size: var(--sigapp-font-size-sm);
+  line-height: 1.5;
+}
+
+.list-state ion-button {
+  margin-top: var(--sigapp-space-4);
+}
+
+.list-state--error ion-icon {
+  color: var(--sigapp-danger);
+}

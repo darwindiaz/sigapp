@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 
@@ -7,20 +7,18 @@ import { NavigationService } from 'src/app/core/services/navigation.service';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
   private navigationService = inject(NavigationService);
 
-  ngOnInit() {}
-
-  async goToFarms() {
+  async goToFarms(): Promise<void> {
     await this.navigationService.goTo(APP_ROUTES.farms);
   }
 
-  async goToBirths() {
+  async goToBirths(): Promise<void> {
     await this.navigationService.goTo(APP_ROUTES.births);
   }
 
-  async goToReports() {
+  async goToReports(): Promise<void> {
     await this.navigationService.goTo(APP_ROUTES.reports);
   }
 }

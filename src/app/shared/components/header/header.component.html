@@ -1,26 +1,42 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="primary" class="app-toolbar">
     <ion-buttons slot="start">
-      <!--Menu hamburger-->
-      <ion-menu-button *ngIf="isMenuButton" menu="main-menu"></ion-menu-button>
-      <!--Back button-->
+      <ion-menu-button
+        *ngIf="isMenuButton"
+        menu="main-menu"
+        aria-label="Abrir menú"
+      ></ion-menu-button>
+
       <ion-back-button
         *ngIf="backButton"
         [defaultHref]="backButton"
+        text=""
+        aria-label="Volver"
       ></ion-back-button>
-      <!--Dismiss modal button-->
-      <ion-button *ngIf="isModal" (click)="dismissModal()">
-        <ion-icon name="close"></ion-icon>
+
+      <ion-button
+        *ngIf="isModal"
+        (click)="dismissModal()"
+        aria-label="Cerrar"
+      >
+        <ion-icon name="close" aria-hidden="true"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ title }}</ion-title>
 
-    <div class="subtitle">
-      {{ activeFarmName ? "Finca: " + activeFarmName : nameApp }}
-    </div>
+    <ion-title class="header-copy">
+      <span class="header-title">{{ title }}</span>
+      <span class="subtitle">
+        {{ activeFarmName ? "Finca: " + activeFarmName : nameApp }}
+      </span>
+    </ion-title>
+
     <ion-buttons slot="end">
-      <ion-button *ngIf="isSignOut" (click)="signOut()">
-        <ion-icon name="power"></ion-icon>
+      <ion-button
+        *ngIf="isSignOut"
+        (click)="signOut()"
+        aria-label="Cerrar sesión"
+      >
+        <ion-icon name="power" aria-hidden="true"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

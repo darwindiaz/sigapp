@@ -1,37 +1,93 @@
-<app-header title="Potreros" [backButton]="'/main/home'"></app-header>
+<app-header title="Potreros" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <ion-grid fixed>
+  <ion-grid fixed class="list-page-grid">
     <ion-row>
       <ion-col size="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Gestión de potreros</ion-card-title>
-            <ion-card-subtitle>
-              Potreros registrados en la finca
-            </ion-card-subtitle>
-          </ion-card-header>
+        <div class="list-toolbar">
+          <ion-searchbar
+            placeholder="Buscar potrero"
+            animated="true"
+            debounce="300"
+            [disabled]="isLoading || hasLoadError || paddocks.length === 0"
+            (ionInput)="onSearch($event)"
+          ></ion-searchbar>
 
-          <ion-card-content>
-            <ion-item *ngIf="isLoading" lines="none">
-              <ion-spinner slot="start" name="crescent"></ion-spinner>
-              <ion-label>Cargando potreros...</ion-label>
-            </ion-item>
+          <ion-button
+            class="list-toolbar__action"
+            color="primary"
+            aria-label="Registrar potrero"
+            (click)="goToCreatePaddock()"
+          >
+            <ion-icon
+              name="add-outline"
+              slot="icon-only"
+              aria-hidden="true"
+            ></ion-icon>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
 
-            <ion-item *ngIf="!isLoading && paddocks.length === 0" lines="none">
-              <ion-label> No hay potreros registrados todavía. </ion-label>
-            </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <app-list-state
+          *ngIf="isLoading"
+          state="loading"
+          title="Cargando potreros"
+          description="Estamos consultando los potreros de la finca."
+        ></app-list-state>
 
-            <ion-list *ngIf="!isLoading && paddocks.length > 0">
+        <app-list-state
+          *ngIf="!isLoading && hasLoadError"
+          state="error"
+          title="No pudimos cargar los potreros"
+          description="Comprueba tu conexión e inténtalo nuevamente."
+          actionLabel="Reintentar"
+          (action)="loadPaddocks()"
+        ></app-list-state>
+
+        <app-list-state
+          *ngIf="!isLoading && !hasLoadError && paddocks.length === 0"
+          state="empty"
+          icon="map-outline"
+          title="Aún no hay potreros"
+          description="Registra el primer potrero para organizar la capacidad y ubicación de los animales."
+          actionLabel="Registrar potrero"
+          (action)="goToCreatePaddock()"
+        ></app-list-state>
+
+        <app-list-state
+          *ngIf="
+            !isLoading &&
+            !hasLoadError &&
+            paddocks.length > 0 &&
+            filteredPaddocks.length === 0
+          "
+          state="empty"
+          icon="search-outline"
+          title="Sin resultados"
+          description="No encontramos potreros que coincidan con la búsqueda."
+        ></app-list-state>
+
+            <ion-list
+              *ngIf="
+                !isLoading && !hasLoadError && filteredPaddocks.length > 0
+              "
+              class="data-list"
+            >
               <ion-item
-                *ngFor="let paddock of paddocks"
-                [button]="true"
+                *ngFor="
+                  let paddock of filteredPaddocks;
+                  trackBy: trackByPaddockId
+                "
                 lines="full"
               >
                 <ion-icon
                   name="map-outline"
                   slot="start"
                   color="primary"
+                  aria-hidden="true"
                 ></ion-icon>
 
                 <ion-label>
@@ -48,8 +104,6 @@
                 </ion-note>
               </ion-item>
             </ion-list>
-          </ion-card-content>
-        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
