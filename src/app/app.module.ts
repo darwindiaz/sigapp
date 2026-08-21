@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy, RouterModule } from '@angular/router';
+import { RouteReuseStrategy } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -13,6 +14,11 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+
+/* es-CO */
+import localeEsCo from '@angular/common/locales/es-CO';
+
+registerLocaleData(localeEsCo);
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +33,11 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    {
+      provide: LOCALE_ID,
+      useValue: 'es-CO',
+    },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

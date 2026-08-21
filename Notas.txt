@@ -31,3 +31,17 @@ Mejoras
 * Mejoras con signal y migrar angular 22;
 * Cambiar todos los estados, enum a español
 * todos los accesos a firebase deberían hacerse en batch/transaction
+* Bloqueo basado en flujo de negocio
+** Registro de animal, requiere Potrero
+** Movimiento de Potrero, requiere potreros > 1 , requiere animal
+
+
+----
+
+paddock-create
+paddocks
+birth-create
+births
+farm-create
+health
+vaccination-create

@@ -1,9 +1,39 @@
-.div-flex-center {
+.auth-content {
+  --background:
+    url("/assets/img/auth/auth-mobile.webp")
+    center / cover no-repeat;
+}
+
+.auth-layout {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: var(--sigapp-space-4);
+}
+
+.auth-form {
+  width: min(100%, 420px);
+  padding: var(--sigapp-space-6);
+  background: var(--sigapp-surface-elevated);
+  border: 1px solid var(--sigapp-primary-border);
+  border-radius: var(--sigapp-radius-md);
+  box-shadow: var(--sigapp-shadow-lg);
 }
 
 .button-submit {
-  margin-top: 40px;
+  margin-top: var(--sigapp-space-6);
+}
+
+@media (min-width: 768px) {
+  .auth-content {
+    --background:
+      url("/assets/img/auth/auth-desktop.webp")
+      center / cover no-repeat;
+  }
+
+  .auth-layout {
+    justify-content: flex-start;
+    padding: var(--sigapp-space-12) clamp(48px, 8vw, 128px);
+  }
 }

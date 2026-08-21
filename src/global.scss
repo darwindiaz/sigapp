@@ -35,3 +35,40 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 //@import "@ionic/angular/css/palettes/dark.system.css";
+
+html,
+body,
+ion-app {
+  font-family: var(--sigapp-font-family);
+  color: var(--sigapp-text);
+}
+
+body {
+  background: var(--sigapp-background);
+}
+
+ion-content {
+  --background: var(--sigapp-background);
+}
+
+ion-title,
+ion-card-title,
+ion-card-subtitle,
+ion-button {
+  letter-spacing: 0;
+}
+
+ion-card {
+  --background: var(--sigapp-surface);
+  border: 1px solid var(--sigapp-border);
+  border-radius: var(--sigapp-radius-md);
+  box-shadow: var(--sigapp-shadow-sm);
+}
+
+ion-button {
+  min-height: var(--sigapp-control-height);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+  --border-radius: var(--sigapp-radius-md);
+}

@@ -42,7 +42,7 @@
               *ngFor="let type of productionTypes"
               [value]="type"
             >
-              {{ type }}
+              {{ productionTypeLabels[type] }}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -59,7 +59,7 @@
 
       <ion-button
         expand="block"
-        color="success"
+        color="primary"
         type="submit"
         [disabled]="form.invalid"
       >

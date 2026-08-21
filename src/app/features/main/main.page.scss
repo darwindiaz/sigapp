@@ -13,7 +13,7 @@
 
 .main-action-placeholder ion-label {
   margin-top: 34px;
-  font-size: 11px;
+  font-size: var(--sigapp-font-size-xs);
 }
 
 .main-action-fab {
@@ -25,11 +25,11 @@
   width: 58px;
   height: 58px;
 
-  --background: var(--ion-color-success);
-  --background-activated: var(--ion-color-success-shade);
-  --background-focused: var(--ion-color-success);
-  --color: var(--ion-color-success-contrast);
-  --box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  --background: var(--ion-color-primary);
+  --background-activated: var(--ion-color-primary-shade);
+  --background-focused: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+  --box-shadow: var(--sigapp-shadow-md);
 }
 
 .side-menu-content {
@@ -47,5 +47,5 @@
 .side-menu-list ion-item,
 .side-menu-footer ion-item {
   --inner-border-width: 0 0 1px 0;
-  --border-color: var(--ion-color-step-200, #d9d9d9);
+  --border-color: var(--sigapp-border);
 }

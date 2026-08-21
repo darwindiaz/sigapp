@@ -11,6 +11,7 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { FARM_PRODUCTION_TYPE_LABELS } from 'src/app/core/constants/domain-labels.constant';
 
 @Component({
   selector: 'app-farm-create',
@@ -26,6 +27,8 @@ export class FarmCreatePage implements OnInit {
   private navigationService: NavigationService = inject(NavigationService);
   private storageService: StorageService = inject(StorageService);
   readonly productionTypes = Object.values(FarmProductionType);
+
+  readonly productionTypeLabels = FARM_PRODUCTION_TYPE_LABELS;
 
   readonly form = this.formBuilder.group({
     name: ['', Validators.required],

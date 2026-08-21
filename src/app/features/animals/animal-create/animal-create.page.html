@@ -18,7 +18,7 @@
             *ngFor="let species of speciesOptions"
             [value]="species"
           >
-            {{ species }}
+            {{ speciesLabels[species] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -30,7 +30,7 @@
             *ngFor="let category of categoryOptions"
             [value]="category"
           >
-            {{ category }}
+            {{ categoryLabels[category] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -39,7 +39,7 @@
         <ion-label position="stacked">Sexo</ion-label>
         <ion-select formControlName="sex" placeholder="Seleccionar">
           <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
-            {{ sex }}
+            {{ sexLabels[sex] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -56,7 +56,7 @@
             *ngFor="let status of statusOptions"
             [value]="status"
           >
-            {{ status }}
+            {{ statusLabels[status] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -100,7 +100,7 @@
             *ngFor="let purpose of purposeOptions"
             [value]="purpose"
           >
-            {{ purpose }}
+            {{ purposeLabels[purpose] }}
           </ion-select-option>
         </ion-select>
       </ion-item>

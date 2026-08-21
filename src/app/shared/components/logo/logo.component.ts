@@ -6,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./logo.component.scss'],
 })
 export class LogoComponent {
-
   urlLogo: string;
   constructor() {
-    this.urlLogo = './assets/logo/logo2.jpg'
+    this.urlLogo = './assets/logo/logo.webp';
   }
 }

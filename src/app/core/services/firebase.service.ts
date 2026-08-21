@@ -24,6 +24,7 @@ import {
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
 import { User } from '../models/user.model';
+import { sanitizeFirestoreData } from '../utils/firestore-data.util';
 
 @Injectable({
   providedIn: 'root',
@@ -75,7 +76,9 @@ export class FirebaseService {
   }
 
   setDocument(path: string, data: any): Promise<void> {
-    return setDoc(doc(this.firestore, path), data);
+    const sanitizedData = sanitizeFirestoreData(data);
+
+    return setDoc(doc(this.firestore, path), sanitizedData);
   }
 
   async getDocument(path: string): Promise<any> {
@@ -83,11 +86,15 @@ export class FirebaseService {
   }
 
   addDocument(path: string, data: any): Promise<any> {
-    return addDoc(collection(this.firestore, path), data);
+    const sanitizedData = sanitizeFirestoreData(data);
+
+    return addDoc(collection(this.firestore, path), sanitizedData);
   }
 
   updateDocument(path: string, data: Partial<unknown>): Promise<void> {
-    return updateDoc(doc(this.firestore, path), data);
+    const sanitizedData = sanitizeFirestoreData(data);
+
+    return updateDoc(doc(this.firestore, path), sanitizedData);
   }
 
   /*Almacenamiento */

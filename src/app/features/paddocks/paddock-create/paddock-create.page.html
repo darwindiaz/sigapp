@@ -27,7 +27,7 @@
             *ngFor="let areaUnit of areaUnitOptions"
             [value]="areaUnit"
           >
-            {{ areaUnit }}
+            {{ areaUnitLabels[areaUnit] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -48,7 +48,7 @@
             *ngFor="let status of statusOptions"
             [value]="status"
           >
-            {{ status }}
+            {{ statusLabels[status] }}
           </ion-select-option>
         </ion-select>
       </ion-item>

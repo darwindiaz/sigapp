@@ -18,7 +18,7 @@ export const MAIN_ACTIONS = [
   },
   {
     code: MainActionCode.RegisterPaddock,
-    text: 'Registrar potreto',
+    text: 'Registrar potrero',
     icon: 'map-outline',
   },
   {

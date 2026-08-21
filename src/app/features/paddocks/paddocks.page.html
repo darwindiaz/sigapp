@@ -31,14 +31,15 @@
                 <ion-icon
                   name="map-outline"
                   slot="start"
-                  color="success"
+                  color="primary"
                 ></ion-icon>
 
                 <ion-label>
                   <h2>{{ paddock.name }}</h2>
-                  <p>Estado: {{ paddock.status }}</p>
+                  <p>Estado: {{ statusLabels[paddock.status] }}</p>
                   <p>
-                    Área: {{ paddock.area || '-' }} {{ paddock.areaUnit || '' }}
+                    Área: {{ paddock.area || '-' }} {{
+                    areaUnitLabels[paddock.areaUnit] || '' }}
                   </p>
                 </ion-label>
 

@@ -2,6 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
+import {
+  ANIMAL_SEX_LABELS,
+  BIRTH_STATUS_LABELS,
+} from 'src/app/core/constants/domain-labels.constant';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
 import {
   Animal,
@@ -35,6 +39,10 @@ export class BirthCreatePage implements OnInit {
   readonly backUrl = APP_ROUTES.home;
   readonly sexOptions = Object.values(AnimalSex);
   readonly statusOptions = Object.values(BirthStatus);
+
+  readonly sexLabels = ANIMAL_SEX_LABELS;
+  readonly statusLabels = BIRTH_STATUS_LABELS;
+
   private farmId: string | null = null;
   animals: Animal[] = [];
 

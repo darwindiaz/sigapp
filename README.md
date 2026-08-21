@@ -24,23 +24,17 @@ El objetivo inicial es cubrir lo mínimo funcional para inventario animal, potre
 - Firestore
 - Capacitor 6
 
+## Identidad visual
+
+La paleta, tipografia, uso de logo, direccion de ilustraciones y criterios
+visuales del MVP se documentan en el [manual de marca](docs/brand/README.md).
+
 ## Estructura principal
 
 ```text
 src/app/
 ├── core/
-│   ├── constants/
-│   ├── enums/
-│   ├── guards/
-│   ├── interfaces/
-│   ├── models/
-│   ├── repositories/
-│   └── services/
 ├── features/
-│   ├── auth/
-│   ├── home/
-│   ├── inventory/
-│   └── main/
 └── shared/
 ```
 
@@ -129,18 +123,6 @@ Ejecutar pruebas:
 npm test
 ```
 
-Buscar outlets duplicados en Git Bash:
-
-```bash
-grep -R --include="*.html" -n "ion-router-outlet" src/app
-```
-
-Buscar outlets duplicados en PowerShell:
-
-```powershell
-Get-ChildItem -Path src/app -Recurse -Include *.html,*.ts | Select-String "ion-router-outlet"
-```
-
 ## Roadmap funcional
 
 ### Fase 0 — Base técnica
@@ -216,3 +198,6 @@ Estado: en progreso.
 - Revisar si las acciones rápidas deben quedarse en `core` o moverse a `features/main`.
 - Definir estructura final de módulos ganaderos.
 - Revisar diseño visual y paleta de colores en una fase posterior.
+- Perfil de usuario (MU).
+- Reportes esenciales (AxAV).
+- Configuracion y preferencias del usuario.

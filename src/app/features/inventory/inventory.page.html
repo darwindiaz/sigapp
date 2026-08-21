@@ -54,10 +54,10 @@
               <ion-label>
                 <h2>{{ animal.code }}</h2>
                 <p>
-                  {{ animal.species }} · {{ animal.category }} · {{ animal.sex
+                  {{ speciesLabels[animal.species] }} · {{ sexLabels[animal.sex]
                   }}
                 </p>
-                <p>Estado: {{ animal.status }}</p>
+                <p>Estado: {{ statusLabels[animal.status] }}</p>
               </ion-label>
 
               <ion-note slot="end"
@@ -104,7 +104,7 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="success" (click)="addAnimal()">
+    <ion-fab-button color="primary" (click)="addAnimal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -1,5 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
+import {
+  ANIMAL_SEX_LABELS,
+  ANIMAL_SPECIES_LABELS,
+  ANIMAL_STATUS_LABELS,
+} from 'src/app/core/constants/domain-labels.constant';
 import { Animal } from 'src/app/core/models/animal.model';
 import { AnimalService } from 'src/app/core/services/animal.service';
 import { FarmContextService } from 'src/app/core/services/farm-context.service';
@@ -18,7 +23,11 @@ export class InventoryPage implements OnInit {
   private animalService: AnimalService = inject(AnimalService);
   private farmContextService: FarmContextService = inject(FarmContextService);
 
-  backUrl: string = APP_ROUTES.home;
+  readonly backUrl: string = APP_ROUTES.home;
+  readonly speciesLabels = ANIMAL_SPECIES_LABELS;
+  readonly sexLabels = ANIMAL_SEX_LABELS;
+  readonly statusLabels = ANIMAL_STATUS_LABELS;
+
   animals: Animal[] = [];
   isLoading: boolean = false;
   viewMode: InventoryViewMode = 'list';

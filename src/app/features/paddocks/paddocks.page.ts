@@ -1,5 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
+import {
+  PADDOCK_AREA_UNIT_LABELS,
+  PADDOCK_STATUS_LABELS,
+} from 'src/app/core/constants/domain-labels.constant';
 
 import { Paddock } from 'src/app/core/models/paddock.model';
 import { FarmContextService } from 'src/app/core/services/farm-context.service';
@@ -15,6 +19,9 @@ export class PaddocksPage implements OnInit {
   private navigationService: NavigationService = inject(NavigationService);
   private paddockService: PaddockService = inject(PaddockService);
   private farmContextService: FarmContextService = inject(FarmContextService);
+
+  readonly statusLabels = PADDOCK_STATUS_LABELS;
+  readonly areaUnitLabels = PADDOCK_AREA_UNIT_LABELS;
 
   paddocks: Paddock[] = [];
   isLoading = false;

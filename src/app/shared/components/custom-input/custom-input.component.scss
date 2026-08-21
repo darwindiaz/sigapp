@@ -1,9 +1,9 @@
 .custom-input {
-  --border-color: #e0e0e0;
-  --border-radius: 15px;
+  --border-color: var(--sigapp-border);
+  --border-radius: var(--sigapp-radius-md);
   --border-style: solid;
   --border-width: 1px;
-  margin: 20px 0;
+  margin: var(--sigapp-space-4) 0;
 
   ion-label {
     position: relative;

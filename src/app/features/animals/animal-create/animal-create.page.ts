@@ -3,6 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { APP_MESSAGES } from 'src/app/core/constants/app-messages.constant';
 
 import { APP_ROUTES } from 'src/app/core/constants/app-routes.constant';
+import {
+  ANIMAL_CATEGORY_LABELS,
+  ANIMAL_PURPOSE_LABELS,
+  ANIMAL_SEX_LABELS,
+  ANIMAL_SPECIES_LABELS,
+  ANIMAL_STATUS_LABELS,
+} from 'src/app/core/constants/domain-labels.constant';
 import { AppMessageCode } from 'src/app/core/enums/app-message-code.enum';
 import {
   Animal,
@@ -41,6 +48,12 @@ export class AnimalCreatePage implements OnInit {
   readonly sexOptions = Object.values(AnimalSex);
   readonly statusOptions = Object.values(AnimalStatus);
   readonly purposeOptions = Object.values(AnimalPurpose);
+
+  readonly speciesLabels = ANIMAL_SPECIES_LABELS;
+  readonly categoryLabels = ANIMAL_CATEGORY_LABELS;
+  readonly sexLabels = ANIMAL_SEX_LABELS;
+  readonly statusLabels = ANIMAL_STATUS_LABELS;
+  readonly purposeLabels = ANIMAL_PURPOSE_LABELS;
 
   readonly form!: FormGroup;
   paddocks: Paddock[] = [];

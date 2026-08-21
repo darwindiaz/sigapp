@@ -1,4 +1,11 @@
-img {
-  height: 30rem;
-  width: 50rem;
+:host {
+  display: block;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+ion-img {
+  width: min(180px, 45vw);
+  height: auto;
+  margin: 0 auto;
 }

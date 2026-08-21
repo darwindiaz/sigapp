@@ -1,15 +1,32 @@
-<ion-content>
-  <div class="div-flex-center">
-    <form [formGroup]="formAuth" (ngSubmit)="onSubmit()">
+<ion-content class="auth-content">
+  <div class="auth-layout">
+    <form class="auth-form" [formGroup]="formAuth" (ngSubmit)="onSubmit()">
       <app-logo></app-logo>
-      <app-custom-input type="email" icon="person-circle-outline" label="Usuario"
-        [control]="$any(formAuth).get('email')"></app-custom-input>
-      <app-custom-input type="password" icon="lock-closed-outline" label="Contraseña"
-        [control]="$any(formAuth).get('password')"></app-custom-input>
-      <p class="ion-text-end" routerLink="forgot-password">¿Olvidaste tu contraseña?</p>
-      <ion-button type="submit" [disabled]="formAuth.invalid" expand="block" shape="round" mode="ios" color="success"
-        class="button-submit">
-        Iniciar Sesión
+      <app-custom-input
+        type="email"
+        icon="person-circle-outline"
+        label="Usuario"
+        [control]="$any(formAuth).get('email')"
+      ></app-custom-input>
+      <app-custom-input
+        type="password"
+        icon="lock-closed-outline"
+        label="Contraseña"
+        [control]="$any(formAuth).get('password')"
+      ></app-custom-input>
+      <div class="ion-text-end">
+        <ion-button fill="clear" size="small" routerLink="forgot-password">
+          ¿Olvidaste tu contraseña?
+        </ion-button>
+      </div>
+      <ion-button
+        type="submit"
+        [disabled]="formAuth.invalid"
+        expand="block"
+        color="primary"
+        class="button-submit"
+      >
+        Iniciar sesión
       </ion-button>
     </form>
   </div>

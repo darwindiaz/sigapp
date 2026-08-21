@@ -1,2 +1,110 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+:root {
+  /* Brand colors */
+  --sigapp-primary: #176b43;
+  --sigapp-primary-dark: #0c4a2f;
+  --sigapp-primary-soft: #dcefe5;
+  --sigapp-secondary: #2b6f8a;
+  --sigapp-accent: #e0a72f;
+
+  /* Surfaces and text */
+  --sigapp-background: #f4f7f5;
+  --sigapp-surface: #ffffff;
+  --sigapp-surface-elevated: rgba(255, 255, 255, 0.94);
+  --sigapp-text: #17231d;
+  --sigapp-text-muted: #5f6f66;
+  --sigapp-border: #d7e0db;
+  --sigapp-primary-border: rgba(23, 107, 67, 0.18);
+  --sigapp-danger: #b93832;
+  --sigapp-warning: #9a6700;
+
+  /* Typography */
+  --sigapp-font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --sigapp-font-size-xs: 12px;
+  --sigapp-font-size-sm: 14px;
+  --sigapp-font-size-md: 16px;
+  --sigapp-font-size-lg: 18px;
+  --sigapp-font-size-xl: 20px;
+  --sigapp-font-size-2xl: 24px;
+
+  /* Spacing and geometry */
+  --sigapp-space-1: 4px;
+  --sigapp-space-2: 8px;
+  --sigapp-space-3: 12px;
+  --sigapp-space-4: 16px;
+  --sigapp-space-6: 24px;
+  --sigapp-space-8: 32px;
+  --sigapp-space-10: 40px;
+  --sigapp-space-12: 48px;
+  --sigapp-radius-sm: 4px;
+  --sigapp-radius-md: 8px;
+  --sigapp-control-height: 44px;
+
+  /* Elevation */
+  --sigapp-shadow-sm: 0 2px 8px rgba(23, 35, 29, 0.08);
+  --sigapp-shadow-md: 0 8px 24px rgba(23, 35, 29, 0.12);
+  --sigapp-shadow-lg: 0 12px 32px rgba(23, 35, 29, 0.14);
+
+  /* Ionic semantic colors */
+  --ion-font-family: var(--sigapp-font-family);
+  --ion-background-color: var(--sigapp-background);
+  --ion-background-color-rgb: 244, 247, 245;
+  --ion-text-color: var(--sigapp-text);
+  --ion-text-color-rgb: 23, 35, 29;
+
+  --ion-color-primary: #176b43;
+  --ion-color-primary-rgb: 23, 107, 67;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #145e3b;
+  --ion-color-primary-tint: #2e7a56;
+
+  --ion-color-secondary: #2b6f8a;
+  --ion-color-secondary-rgb: 43, 111, 138;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #26627a;
+  --ion-color-secondary-tint: #407d96;
+
+  --ion-color-tertiary: #e0a72f;
+  --ion-color-tertiary-rgb: 224, 167, 47;
+  --ion-color-tertiary-contrast: #17231d;
+  --ion-color-tertiary-contrast-rgb: 23, 35, 29;
+  --ion-color-tertiary-shade: #c59329;
+  --ion-color-tertiary-tint: #e3b044;
+
+  --ion-color-success: #2f7d4f;
+  --ion-color-success-rgb: 47, 125, 79;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #296e46;
+  --ion-color-success-tint: #448a61;
+
+  --ion-color-warning: #e0a72f;
+  --ion-color-warning-rgb: 224, 167, 47;
+  --ion-color-warning-contrast: #17231d;
+  --ion-color-warning-contrast-rgb: 23, 35, 29;
+  --ion-color-warning-shade: #c59329;
+  --ion-color-warning-tint: #e3b044;
+
+  --ion-color-danger: #b93832;
+  --ion-color-danger-rgb: 185, 56, 50;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #a3312c;
+  --ion-color-danger-tint: #c04c47;
+
+  --ion-color-medium: #5f6f66;
+  --ion-color-medium-rgb: 95, 111, 102;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #54625a;
+  --ion-color-medium-tint: #6f7d75;
+
+  --ion-color-light: #f4f7f5;
+  --ion-color-light-rgb: 244, 247, 245;
+  --ion-color-light-contrast: #17231d;
+  --ion-color-light-contrast-rgb: 23, 35, 29;
+  --ion-color-light-shade: #d7dad8;
+  --ion-color-light-tint: #f5f8f6;
+}
