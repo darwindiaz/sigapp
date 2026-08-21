@@ -41,14 +41,23 @@ export class AuthPage {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
+  isSubmitting = false;
 
-  async onSubmit() {
+  async onSubmit(): Promise<void> {
+    if (this.isSubmitting) {
+      return;
+    }
+
     if (!this.formAuth.valid) {
+      this.formAuth.markAllAsTouched();
       await this.messageService.showMessage(AppMessageCode.RequiredFields);
       return;
     }
 
-    const loading = await this.loadingService.createLoading();
+    this.isSubmitting = true;
+    const loading = await this.loadingService.createLoading(
+      'Iniciando sesión...',
+    );
     await loading.present();
 
     try {
@@ -70,6 +79,7 @@ export class AuthPage {
       console.error(error);
       await this.messageService.showMessage(AppMessageCode.UnexpectedError);
     } finally {
+      this.isSubmitting = false;
       await loading.dismiss();
     }
   }

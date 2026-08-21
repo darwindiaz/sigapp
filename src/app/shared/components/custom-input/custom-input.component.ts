@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-input',
@@ -7,25 +7,31 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./custom-input.component.scss'],
 })
 export class CustomInputComponent implements OnInit {
-
   @Input() control!: FormControl;
-  @Input() type!: string;
-  @Input() label!: string;
-  @Input() autoComplete!: string;
-  @Input() icon!: string;
-  @Input() fill!: string;
-  @Input() readOnly!: boolean;
+  @Input() type = 'text';
+  @Input() label = '';
+  @Input() autoComplete = '';
+  @Input() icon = '';
+  @Input() fill = '';
+  @Input() formatMessage = 'Ingresa un valor válido.';
+  @Input() readOnly = false;
 
-  inputText!: string;
-  hide: boolean = true;
+  inputText = 'text';
+  hide = true;
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.inputText = this.type;
   }
 
-  showPassword() {
+  get isRequired(): boolean {
+    return this.control?.hasValidator(Validators.required) ?? false;
+  }
+
+  get passwordButtonLabel(): string {
+    return this.hide ? 'Mostrar contraseña' : 'Ocultar contraseña';
+  }
+
+  showPassword(): void {
     this.hide = !this.hide;
     this.inputText = this.hide ? 'password' : 'text';
   }

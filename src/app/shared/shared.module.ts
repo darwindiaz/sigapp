@@ -6,16 +6,19 @@ import { LogoComponent } from './components/logo/logo.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListStateComponent } from './components/list-state/list-state.component';
+import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
 
 @NgModule({
   declarations: [
     CustomInputComponent,
+    FormFieldErrorComponent,
     HeaderComponent,
     ListStateComponent,
     LogoComponent,
   ],
   exports: [
     CustomInputComponent,
+    FormFieldErrorComponent,
     HeaderComponent,
     ListStateComponent,
     LogoComponent,

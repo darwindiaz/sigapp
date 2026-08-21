@@ -1,12 +1,31 @@
 <ion-item class="custom-input" lines="none">
   <ion-icon *ngIf="icon" color="primary" slot="start" [name]="icon" aria-hidden="true"></ion-icon>
-  <ion-input [formControl]="control" [type]="inputText" label-placement="floating" [readonly]="readOnly">
+  <ion-input
+    [formControl]="control"
+    [type]="inputText"
+    label-placement="floating"
+    [readonly]="readOnly"
+    [autocomplete]="autoComplete"
+  >
     <div slot="label"> {{label}}
-      <ion-text color="danger" *ngIf="control.hasError('required')">*</ion-text>
+      <ion-text color="danger" *ngIf="isRequired">*</ion-text>
     </div>
   </ion-input>
-  <ion-button *ngIf="type === 'password'" fill="clear" slot="end" aria-label="show" (click)="showPassword()">
+  <ion-button
+    *ngIf="type === 'password'"
+    type="button"
+    fill="clear"
+    slot="end"
+    [attr.aria-label]="passwordButtonLabel"
+    (click)="showPassword()"
+  >
     <ion-icon color="primary" slot="icon-only" [name]="hide ? 'eye-outline' : 'eye-off-outline'"
       aria-hidden="true"></ion-icon>
   </ion-button>
 </ion-item>
+
+<app-form-field-error
+  [control]="control"
+  [requiredMessage]="'Completa el campo ' + label.toLowerCase() + '.'"
+  [formatMessage]="formatMessage"
+></app-form-field-error>

@@ -1,16 +1,47 @@
 <app-header title="Registrar nacimiento" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <div class="ion-padding">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <ion-list>
-        <ion-item>
+  <div class="form-page">
+    <app-list-state
+      *ngIf="isLoadingAnimals"
+      state="loading"
+      title="Cargando animales"
+    ></app-list-state>
+
+    <app-list-state
+      *ngIf="!isLoadingAnimals && hasAnimalLoadError"
+      state="error"
+      title="No pudimos cargar los animales"
+      description="Comprueba tu conexión e inténtalo nuevamente."
+      actionLabel="Reintentar"
+      (action)="loadAnimals()"
+    ></app-list-state>
+
+    <app-list-state
+      *ngIf="!isLoadingAnimals && !hasAnimalLoadError && animals.length === 0"
+      state="empty"
+      icon="paw-outline"
+      title="Necesitas un animal registrado"
+      description="Registra primero la madre antes de crear un nacimiento."
+      actionLabel="Registrar animal"
+      (action)="goToCreateAnimal()"
+    ></app-list-state>
+
+    <form
+      *ngIf="!isLoadingAnimals && !hasAnimalLoadError && animals.length > 0"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+      <p class="form-required-note"><span>*</span> Campos obligatorios</p>
+
+      <ion-list class="form-list">
+        <ion-item class="form-field">
           <ion-select
-            label="Madre"
             label-placement="stacked"
             formControlName="motherId"
             interface="popover"
           >
+            <div slot="label">Madre *</div>
             <ion-select-option
               *ngFor="let animal of animals"
               [value]="animal.id"
@@ -19,8 +50,12 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.motherId"
+          requiredMessage="Selecciona la madre."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-select
             label="Padre opcional"
             label-placement="stacked"
@@ -38,44 +73,60 @@
           </ion-select>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
-            label="Código de la cría"
             label-placement="stacked"
             formControlName="calfCode"
             placeholder="Ej: T-001"
-          ></ion-input>
+            maxlength="50"
+          >
+            <div slot="label">Código de la cría *</div>
+          </ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.calfCode"
+          requiredMessage="Ingresa el código de la cría."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             type="date"
-            label="Fecha de nacimiento"
             label-placement="stacked"
             formControlName="date"
-          ></ion-input>
+            [max]="today"
+          >
+            <div slot="label">Fecha de nacimiento *</div>
+          </ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.date"
+          requiredMessage="Selecciona la fecha de nacimiento."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-select
-            label="Sexo"
             label-placement="stacked"
             formControlName="sex"
             interface="popover"
           >
+            <div slot="label">Sexo *</div>
             <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
               {{ sexLabels[sex] }}
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.sex"
+          requiredMessage="Selecciona el sexo."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-select
-            label="Estado"
             label-placement="stacked"
             formControlName="status"
             interface="popover"
           >
+            <div slot="label">Estado *</div>
             <ion-select-option
               *ngFor="let status of statusOptions"
               [value]="status"
@@ -84,32 +135,46 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.status"
+          requiredMessage="Selecciona el estado."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             type="number"
             label="Peso inicial kg"
             label-placement="stacked"
             formControlName="weight"
             placeholder="Ej: 32"
+            min="0.1"
+            step="0.1"
           ></ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.weight"
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-textarea
             label="Notas"
             label-placement="stacked"
             formControlName="notes"
             placeholder="Observaciones del nacimiento"
+            maxlength="500"
+            [autoGrow]="true"
           ></ion-textarea>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.notes"
+        ></app-form-field-error>
       </ion-list>
 
       <ion-button
         expand="block"
         color="primary"
         type="submit"
-        [disabled]="form.invalid || !animals.length"
+        [disabled]="form.invalid || isSubmitting"
       >
         Guardar nacimiento
       </ion-button>

@@ -1,26 +1,39 @@
 <app-header title="Registrar potrero" [backButton]="backUrl"></app-header>
 
 <ion-content>
+  <div class="form-page">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Nombre del potrero</ion-label>
+    <p class="form-required-note"><span>*</span> Campos obligatorios</p>
+
+    <ion-list class="form-list">
+      <ion-item class="form-field">
+        <ion-label position="stacked">Nombre del potrero *</ion-label>
         <ion-input
           formControlName="name"
           placeholder="Ej: Potrero 1"
+          maxlength="80"
         ></ion-input>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.name"
+        requiredMessage="Ingresa el nombre del potrero."
+      ></app-form-field-error>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Área</ion-label>
         <ion-input
           type="number"
           formControlName="area"
           placeholder="Ej: 2.5"
+          min="0.01"
+          step="0.01"
         ></ion-input>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.area"
+      ></app-form-field-error>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Unidad de área</ion-label>
         <ion-select formControlName="areaUnit">
           <ion-select-option
@@ -32,17 +45,23 @@
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Capacidad estimada</ion-label>
         <ion-input
           type="number"
           formControlName="capacityAnimals"
           placeholder="Número de animales"
+          min="1"
+          step="1"
         ></ion-input>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.capacityAnimals"
+        formatMessage="Ingresa un número entero de animales."
+      ></app-form-field-error>
 
-      <ion-item>
-        <ion-label position="stacked">Estado</ion-label>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Estado *</ion-label>
         <ion-select formControlName="status">
           <ion-select-option
             *ngFor="let status of statusOptions"
@@ -52,18 +71,34 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.status"
+        requiredMessage="Selecciona el estado."
+      ></app-form-field-error>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Notas</ion-label>
         <ion-textarea
           formControlName="notes"
           placeholder="Observaciones del potrero"
+          maxlength="500"
+          [autoGrow]="true"
         ></ion-textarea>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.notes"
+      ></app-form-field-error>
     </ion-list>
 
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit"> Guardar potrero </ion-button>
+    <div class="form-actions">
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="form.invalid || isSubmitting"
+      >
+        Guardar potrero
+      </ion-button>
     </div>
   </form>
+  </div>
 </ion-content>

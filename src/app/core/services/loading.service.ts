@@ -7,7 +7,7 @@ import { LoadingController } from '@ionic/angular';
 export class LoadingService {
   private loadingController = inject(LoadingController);
 
-  createLoading(message: string = 'Loading...') {
+  createLoading(message: string = 'Procesando...') {
     return this.loadingController.create({
       message,
       spinner: 'circular',

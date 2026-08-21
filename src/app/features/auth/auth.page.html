@@ -6,12 +6,15 @@
         type="email"
         icon="person-circle-outline"
         label="Usuario"
+        autoComplete="email"
+        formatMessage="Ingresa un correo electrónico válido."
         [control]="$any(formAuth).get('email')"
       ></app-custom-input>
       <app-custom-input
         type="password"
         icon="lock-closed-outline"
         label="Contraseña"
+        autoComplete="current-password"
         [control]="$any(formAuth).get('password')"
       ></app-custom-input>
       <div class="ion-text-end">
@@ -21,7 +24,7 @@
       </div>
       <ion-button
         type="submit"
-        [disabled]="formAuth.invalid"
+        [disabled]="formAuth.invalid || isSubmitting"
         expand="block"
         color="primary"
         class="button-submit"

@@ -14,6 +14,10 @@ import { HealthEventService } from 'src/app/core/services/health-event.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
+import {
+  nonBlankValidator,
+  notFutureDateValidator,
+} from 'src/app/core/validators/form.validators';
 
 @Component({
   selector: 'app-vaccination-create',
@@ -30,17 +34,27 @@ export class VaccinationCreatePage implements OnInit {
   private farmContextService: FarmContextService = inject(FarmContextService);
 
   readonly backUrl = APP_ROUTES.health;
+  readonly today = this.getToday();
   private farmId: string | null = null;
   animals: Animal[] = [];
+  isLoadingAnimals = true;
+  hasAnimalLoadError = false;
+  isSubmitting = false;
 
   readonly form = this.formBuilder.group({
     animalId: ['', Validators.required],
-    product: ['', Validators.required],
-    date: [this.getToday(), Validators.required],
+    product: [
+      '',
+      [Validators.required, nonBlankValidator, Validators.maxLength(100)],
+    ],
+    date: [
+      this.getToday(),
+      [Validators.required, notFutureDateValidator],
+    ],
     nextDate: [''],
-    dose: [''],
-    responsible: [''],
-    notes: [''],
+    dose: ['', Validators.maxLength(50)],
+    responsible: ['', Validators.maxLength(100)],
+    notes: ['', Validators.maxLength(500)],
   });
 
   async ngOnInit(): Promise<void> {
@@ -54,20 +68,48 @@ export class VaccinationCreatePage implements OnInit {
     await this.loadAnimals();
   }
 
-  async loadAnimals() {
+  async loadAnimals(): Promise<void> {
     if (!this.farmId) {
       return;
     }
-    this.animals = await this.animalService.getAnimals(this.farmId);
+    this.isLoadingAnimals = true;
+    this.hasAnimalLoadError = false;
+
+    try {
+      this.animals = await this.animalService.getAnimals(this.farmId);
+    } catch (error) {
+      console.error(error);
+      this.animals = [];
+      this.hasAnimalLoadError = true;
+    } finally {
+      this.isLoadingAnimals = false;
+    }
   }
 
-  getToday() {
-    return new Date().toISOString().substring(0, 10);
+  getToday(): string {
+    const today = new Date();
+
+    return [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-');
   }
 
-  async onSubmit() {
+  async onSubmit(): Promise<void> {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    const { date, nextDate } = this.form.getRawValue();
+
+    if (date && nextDate && nextDate < date) {
+      this.form.controls.nextDate.setErrors({ dateBefore: true });
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      await this.messageService.showMessage(AppMessageCode.RequiredFields);
       return;
     }
 
@@ -81,11 +123,14 @@ export class VaccinationCreatePage implements OnInit {
       return;
     }
 
-    const loading = await this.loadingService.createLoading();
+    this.isSubmitting = true;
+    const loading = await this.loadingService.createLoading(
+      'Guardando vacunación...',
+    );
     await loading.present();
 
     try {
-      const healthEvent = this.buildHealtEvent(this.farmId);
+      const healthEvent = this.buildHealthEvent(this.farmId);
 
       await this.healthEventService.createHealthEvent(this.farmId, healthEvent);
 
@@ -96,13 +141,20 @@ export class VaccinationCreatePage implements OnInit {
       });
     } catch (error) {
       console.error(error);
-      this.messageService.showMessage(AppMessageCode.VaccinationCreateError);
+      await this.messageService.showMessage(
+        AppMessageCode.VaccinationCreateError,
+      );
     } finally {
-      loading.dismiss();
+      this.isSubmitting = false;
+      await loading.dismiss();
     }
   }
 
-  private buildHealtEvent(farmId: string): HealthEvent {
+  async goToCreateAnimal(): Promise<void> {
+    await this.navigationService.goTo(APP_ROUTES.createAnimal);
+  }
+
+  private buildHealthEvent(farmId: string): HealthEvent {
     const formValue = this.form.getRawValue();
 
     return {
@@ -110,12 +162,12 @@ export class VaccinationCreatePage implements OnInit {
       farmId,
       animalId: formValue.animalId!,
       type: HealthEventType.Vaccine,
-      product: formValue.product!,
+      product: formValue.product!.trim(),
       date: new Date(formValue.date!),
       nextDate: formValue.nextDate ? new Date(formValue.nextDate) : undefined,
-      dose: formValue.dose || undefined,
-      responsible: formValue.responsible || undefined,
-      notes: formValue.notes || undefined,
+      dose: formValue.dose?.trim() || undefined,
+      responsible: formValue.responsible?.trim() || undefined,
+      notes: formValue.notes?.trim() || undefined,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

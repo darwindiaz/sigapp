@@ -21,6 +21,10 @@ import { FarmContextService } from 'src/app/core/services/farm-context.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
+import {
+  nonBlankValidator,
+  notFutureDateValidator,
+} from 'src/app/core/validators/form.validators';
 
 @Component({
   selector: 'app-birth-create',
@@ -42,19 +46,29 @@ export class BirthCreatePage implements OnInit {
 
   readonly sexLabels = ANIMAL_SEX_LABELS;
   readonly statusLabels = BIRTH_STATUS_LABELS;
+  readonly today = this.getToday();
 
   private farmId: string | null = null;
   animals: Animal[] = [];
+  isLoadingAnimals = true;
+  hasAnimalLoadError = false;
+  isSubmitting = false;
 
   readonly form = this.formBuilder.group({
     motherId: ['', Validators.required],
     fatherId: [''],
-    calfCode: ['', Validators.required],
-    date: [this.getToday(), Validators.required],
+    calfCode: [
+      '',
+      [Validators.required, nonBlankValidator, Validators.maxLength(50)],
+    ],
+    date: [
+      this.getToday(),
+      [Validators.required, notFutureDateValidator],
+    ],
     sex: [AnimalSex.Female, Validators.required],
     status: [BirthStatus.Alive, Validators.required],
-    weight: [null as number | null],
-    notes: [''],
+    weight: [null as number | null, Validators.min(0.1)],
+    notes: ['', Validators.maxLength(500)],
   });
 
   async ngOnInit(): Promise<void> {
@@ -73,12 +87,28 @@ export class BirthCreatePage implements OnInit {
       return;
     }
 
-    this.animals = await this.animalService.getAnimals(this.farmId);
+    this.isLoadingAnimals = true;
+    this.hasAnimalLoadError = false;
+
+    try {
+      this.animals = await this.animalService.getAnimals(this.farmId);
+    } catch (error) {
+      console.error(error);
+      this.animals = [];
+      this.hasAnimalLoadError = true;
+    } finally {
+      this.isLoadingAnimals = false;
+    }
   }
 
   async onSubmit(): Promise<void> {
+    if (this.isSubmitting) {
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      await this.messageService.showMessage(AppMessageCode.RequiredFields);
       return;
     }
 
@@ -92,7 +122,10 @@ export class BirthCreatePage implements OnInit {
       return;
     }
 
-    const loading = await this.loadingService.createLoading();
+    this.isSubmitting = true;
+    const loading = await this.loadingService.createLoading(
+      'Guardando nacimiento...',
+    );
     await loading.present();
 
     try {
@@ -108,8 +141,13 @@ export class BirthCreatePage implements OnInit {
       console.error(error);
       await this.messageService.showMessage(AppMessageCode.BirthCreateError);
     } finally {
+      this.isSubmitting = false;
       await loading.dismiss();
     }
+  }
+
+  async goToCreateAnimal(): Promise<void> {
+    await this.navigationService.goTo(APP_ROUTES.createAnimal);
   }
 
   private buildCalfAnimal(farmId: string): Animal {
@@ -119,7 +157,7 @@ export class BirthCreatePage implements OnInit {
     return {
       id: crypto.randomUUID(),
       farmId,
-      code: formValue.calfCode!,
+      code: formValue.calfCode!.trim(),
       species: AnimalSpecies.Bovine,
       category: AnimalCategory.Calf,
       sex: formValue.sex!,
@@ -127,7 +165,7 @@ export class BirthCreatePage implements OnInit {
       status: AnimalStatus.Active,
       motherId: formValue.motherId!,
       fatherId: formValue.fatherId || undefined,
-      notes: formValue.notes || undefined,
+      notes: formValue.notes?.trim() || undefined,
       createdAt: now,
       updatedAt: now,
     };
@@ -147,13 +185,19 @@ export class BirthCreatePage implements OnInit {
       sex: formValue.sex!,
       status: formValue.status!,
       weight: formValue.weight || undefined,
-      notes: formValue.notes || undefined,
+      notes: formValue.notes?.trim() || undefined,
       createdAt: now,
       updatedAt: now,
     };
   }
 
   private getToday(): string {
-    return new Date().toISOString().substring(0, 10);
+    const today = new Date();
+
+    return [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-');
   }
 }

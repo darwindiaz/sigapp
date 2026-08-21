@@ -28,15 +28,15 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     type: AppMessageType.Danger,
   },
   [AppMessageCode.AnimalCreated]: {
-    text: 'Animal creado exitosamente',
+    text: 'Animal registrado correctamente.',
     type: AppMessageType.Success,
   },
   [AppMessageCode.AnimalCreatedError]: {
     text: 'No se pudo registrar el animal.',
-    type: AppMessageType.Success,
+    type: AppMessageType.Danger,
   },
   [AppMessageCode.FarmRequired]: {
-    text: 'Primero debes registrar una Finca para realizar este proceso.',
+    text: 'Primero debes registrar una finca para realizar este proceso.',
     type: AppMessageType.Warning,
   },
   [AppMessageCode.DiffPaddock]: {
@@ -74,6 +74,22 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
 
   [AppMessageCode.FarmCreateError]: {
     text: 'No se pudo crear la finca.',
+    type: AppMessageType.Danger,
+  },
+  [AppMessageCode.PaddockCreated]: {
+    text: 'Potrero registrado correctamente.',
+    type: AppMessageType.Success,
+  },
+  [AppMessageCode.PaddockCreateError]: {
+    text: 'No se pudo registrar el potrero.',
+    type: AppMessageType.Danger,
+  },
+  [AppMessageCode.PaddockMovementCreated]: {
+    text: 'Movimiento registrado correctamente.',
+    type: AppMessageType.Success,
+  },
+  [AppMessageCode.PaddockMovementCreateError]: {
+    text: 'No se pudo registrar el movimiento.',
     type: AppMessageType.Danger,
   },
 };

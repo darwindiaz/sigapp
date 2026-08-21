@@ -16,4 +16,8 @@ export enum AppMessageCode {
   BirthCreateError = 'BIRTH-CREATE-ERROR',
   FarmCreated = 'FARM-CREATED',
   FarmCreateError = 'FARM-CREATE-ERROR',
+  PaddockCreated = 'PADDOCK-CREATED',
+  PaddockCreateError = 'PADDOCK-CREATE-ERROR',
+  PaddockMovementCreated = 'PADDOCK-MOVEMENT-CREATED',
+  PaddockMovementCreateError = 'PADDOCK-MOVEMENT-CREATE-ERROR',
 }

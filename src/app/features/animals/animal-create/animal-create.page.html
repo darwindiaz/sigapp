@@ -1,18 +1,26 @@
 <app-header title="Registrar animal" [backButton]="backUrl"></app-header>
 
 <ion-content>
+  <div class="form-page">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Código / identificación</ion-label>
+    <p class="form-required-note"><span>*</span> Campos obligatorios</p>
+
+    <ion-list class="form-list">
+      <ion-item class="form-field">
+        <ion-label position="stacked">Código / identificación *</ion-label>
         <ion-input
           formControlName="code"
           placeholder="Ej: VACA-001"
+          maxlength="50"
         ></ion-input>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['code']"
+        requiredMessage="Ingresa el código del animal."
+      ></app-form-field-error>
 
-      <ion-item>
-        <ion-label position="stacked">Especie</ion-label>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Especie *</ion-label>
         <ion-select formControlName="species" placeholder="Seleccionar">
           <ion-select-option
             *ngFor="let species of speciesOptions"
@@ -22,9 +30,13 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['species']"
+        requiredMessage="Selecciona la especie."
+      ></app-form-field-error>
 
-      <ion-item>
-        <ion-label position="stacked">Categoría</ion-label>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Categoría *</ion-label>
         <ion-select formControlName="category" placeholder="Seleccionar">
           <ion-select-option
             *ngFor="let category of categoryOptions"
@@ -34,23 +46,38 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['category']"
+        requiredMessage="Selecciona la categoría."
+      ></app-form-field-error>
 
-      <ion-item>
-        <ion-label position="stacked">Sexo</ion-label>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Sexo *</ion-label>
         <ion-select formControlName="sex" placeholder="Seleccionar">
           <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
             {{ sexLabels[sex] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['sex']"
+        requiredMessage="Selecciona el sexo."
+      ></app-form-field-error>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Fecha nacimiento / ingreso</ion-label>
-        <ion-input type="date" formControlName="birthDate"></ion-input>
+        <ion-input
+          type="date"
+          formControlName="birthDate"
+          [max]="today"
+        ></ion-input>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['birthDate']"
+      ></app-form-field-error>
 
-      <ion-item>
-        <ion-label position="stacked">Estado</ion-label>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Estado *</ion-label>
         <ion-select formControlName="status">
           <ion-select-option
             *ngFor="let status of statusOptions"
@@ -60,12 +87,17 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['status']"
+        requiredMessage="Selecciona el estado."
+      ></app-form-field-error>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Potrero actual</ion-label>
         <ion-select
           formControlName="paddockId"
           placeholder="Seleccionar potrero"
+          [disabled]="isLoadingPaddocks || hasPaddockLoadError"
         >
           <ion-select-option value=""> Sin asignar </ion-select-option>
 
@@ -77,23 +109,28 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <div>
-        <ion-item *ngIf="isLoadingPaddocks" lines="none">
-          <ion-spinner slot="start" name="crescent"></ion-spinner>
-          <ion-label>Cargando potreros...</ion-label>
-        </ion-item>
-        <ion-item
-          *ngIf="!isLoadingPaddocks && paddocks.length === 0"
-          lines="none"
+      <p *ngIf="isLoadingPaddocks" class="form-help">Cargando potreros...</p>
+      <p *ngIf="hasPaddockLoadError" class="form-help form-help--error">
+        No se pudieron cargar los potreros.
+        <ion-button
+          type="button"
+          fill="clear"
+          size="small"
+          (click)="loadPaddocks()"
         >
-          <ion-label color="medium">
-            No hay potreros registrados. Puedes guardar el animal sin asignar
-            potrero.
-          </ion-label>
-        </ion-item>
-      </div>
+          Reintentar
+        </ion-button>
+      </p>
+      <p
+        *ngIf="
+          !isLoadingPaddocks && !hasPaddockLoadError && paddocks.length === 0
+        "
+        class="form-help"
+      >
+        Puedes guardar el animal sin asignar potrero.
+      </p>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Propósito</ion-label>
         <ion-select formControlName="purpose" placeholder="Seleccionar">
           <ion-select-option
@@ -105,17 +142,29 @@
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Notas</ion-label>
         <ion-textarea
           formControlName="notes"
           placeholder="Observaciones"
+          maxlength="500"
+          [autoGrow]="true"
         ></ion-textarea>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls['notes']"
+      ></app-form-field-error>
     </ion-list>
 
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit"> Guardar animal </ion-button>
+    <div class="form-actions">
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="form.invalid || isSubmitting"
+      >
+        Guardar animal
+      </ion-button>
     </div>
   </form>
+  </div>
 </ion-content>

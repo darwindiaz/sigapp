@@ -133,3 +133,71 @@ ion-button {
   font-size: var(--sigapp-font-size-sm);
   line-height: 1.4;
 }
+
+.form-page {
+  width: min(100%, 760px);
+  margin-inline: auto;
+  padding: var(--sigapp-space-4);
+  padding-bottom: calc(var(--sigapp-space-12) + env(safe-area-inset-bottom));
+}
+
+.form-required-note {
+  margin: 0 0 var(--sigapp-space-3);
+  color: var(--sigapp-text-muted);
+  font-size: var(--sigapp-font-size-xs);
+}
+
+.form-required-note span {
+  color: var(--sigapp-danger);
+  font-weight: 700;
+}
+
+.form-list {
+  padding: 0;
+  background: transparent;
+}
+
+.form-field {
+  --background: var(--sigapp-surface);
+  --border-color: var(--sigapp-border);
+  --border-radius: var(--sigapp-radius-md);
+  --border-style: solid;
+  --border-width: 1px;
+  --inner-border-width: 0;
+  --padding-start: var(--sigapp-space-4);
+  --inner-padding-end: var(--sigapp-space-4);
+
+  margin-bottom: var(--sigapp-space-3);
+}
+
+.form-field ion-label,
+.form-field [slot="label"] {
+  color: var(--sigapp-text-muted);
+  font-weight: 500;
+}
+
+.form-help {
+  margin: calc(var(--sigapp-space-2) * -1) var(--sigapp-space-4)
+    var(--sigapp-space-3);
+  color: var(--sigapp-text-muted);
+  font-size: var(--sigapp-font-size-xs);
+  line-height: 1.4;
+}
+
+.form-help--error {
+  color: var(--sigapp-danger);
+}
+
+.form-help ion-button {
+  min-height: 32px;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.form-actions {
+  margin-top: var(--sigapp-space-4);
+}
+
+.form-actions ion-button {
+  margin: 0;
+}

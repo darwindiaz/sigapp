@@ -16,6 +16,7 @@ import { LoadingService } from 'src/app/core/services/loading.service';
 import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 import { PaddockService } from 'src/app/core/services/paddock.service';
+import { nonBlankValidator } from 'src/app/core/validators/form.validators';
 
 @Component({
   selector: 'app-paddock-create',
@@ -39,13 +40,17 @@ export class PaddockCreatePage implements OnInit {
   readonly statusLabels = PADDOCK_STATUS_LABELS;
 
   readonly form = this.formBuilder.group({
-    name: ['', [Validators.required]],
-    area: [''],
+    name: [
+      '',
+      [Validators.required, nonBlankValidator, Validators.maxLength(80)],
+    ],
+    area: ['', Validators.min(0.01)],
     areaUnit: [PaddockAreaUnit.Hectares],
-    capacityAnimals: [''],
+    capacityAnimals: ['', [Validators.min(1), Validators.pattern(/^\d+$/)]],
     status: [PaddockStatus.Available, [Validators.required]],
-    notes: [''],
+    notes: ['', Validators.maxLength(500)],
   });
+  isSubmitting = false;
 
   async ngOnInit(): Promise<void> {
     this.farmId = await this.farmContextService.requireActiveFarmId();
@@ -55,9 +60,14 @@ export class PaddockCreatePage implements OnInit {
     }
   }
 
-  async onSubmit() {
+  async onSubmit(): Promise<void> {
+    if (this.isSubmitting) {
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      await this.messageService.showMessage(AppMessageCode.RequiredFields);
       return;
     }
 
@@ -66,19 +76,24 @@ export class PaddockCreatePage implements OnInit {
       return;
     }
 
-    const loading = await this.loadingService.createLoading();
+    this.isSubmitting = true;
+    const loading = await this.loadingService.createLoading(
+      'Guardando potrero...',
+    );
     await loading.present();
 
     try {
       const paddock = this.buildPaddock(this.farmId);
 
       await this.paddockService.createPaddock(this.farmId, paddock);
-      this.navigationService.goTo(APP_ROUTES.paddocks);
+      await this.messageService.showMessage(AppMessageCode.PaddockCreated);
+      await this.navigationService.goTo(APP_ROUTES.paddocks);
     } catch (error) {
       console.error(error);
-      this.messageService.showMessage(AppMessageCode.RequiredFields);
+      await this.messageService.showMessage(AppMessageCode.PaddockCreateError);
     } finally {
-      loading.dismiss();
+      this.isSubmitting = false;
+      await loading.dismiss();
     }
   }
 

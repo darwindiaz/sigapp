@@ -1,37 +1,53 @@
 <app-header title="Crear finca" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <div class="ion-padding">
+  <div class="form-page">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <ion-list>
-        <ion-item>
+      <p class="form-required-note"><span>*</span> Campos obligatorios</p>
+
+      <ion-list class="form-list">
+        <ion-item class="form-field">
           <ion-input
-            label="Nombre de la finca"
             label-placement="stacked"
             formControlName="name"
             placeholder="Ej: La Esperanza"
-          ></ion-input>
+            maxlength="80"
+          >
+            <div slot="label">Nombre de la finca *</div>
+          </ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.name"
+          requiredMessage="Ingresa el nombre de la finca."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             label="Departamento"
             label-placement="stacked"
             formControlName="department"
             placeholder="Ej: Córdoba"
+            maxlength="80"
           ></ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.department"
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             label="Municipio"
             label-placement="stacked"
             formControlName="municipality"
             placeholder="Ej: Montería"
+            maxlength="80"
           ></ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.municipality"
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-select
             label="Tipo de producción"
             label-placement="stacked"
@@ -47,24 +63,31 @@
           </ion-select>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-textarea
             label="Notas"
             label-placement="stacked"
             formControlName="notes"
             placeholder="Observaciones generales"
+            maxlength="500"
+            [autoGrow]="true"
           ></ion-textarea>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.notes"
+        ></app-form-field-error>
       </ion-list>
 
+      <div class="form-actions">
       <ion-button
         expand="block"
         color="primary"
         type="submit"
-        [disabled]="form.invalid"
+        [disabled]="form.invalid || isSubmitting"
       >
         Guardar finca
       </ion-button>
+      </div>
     </form>
   </div>
 </ion-content>

@@ -1,59 +1,139 @@
 <app-header title="Movimiento de potrero" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Animal</ion-label>
+  <div class="form-page">
+  <app-list-state
+    *ngIf="isLoadingData"
+    state="loading"
+    title="Cargando animales y potreros"
+  ></app-list-state>
+
+  <app-list-state
+    *ngIf="!isLoadingData && hasDataLoadError"
+    state="error"
+    title="No pudimos cargar la información"
+    description="Comprueba tu conexión e inténtalo nuevamente."
+    actionLabel="Reintentar"
+    (action)="loadData()"
+  ></app-list-state>
+
+  <app-list-state
+    *ngIf="!isLoadingData && !hasDataLoadError && animals.length === 0"
+    state="empty"
+    icon="paw-outline"
+    title="Necesitas un animal registrado"
+    description="Registra un animal antes de crear un movimiento."
+    actionLabel="Registrar animal"
+    (action)="goToCreateAnimal()"
+  ></app-list-state>
+
+  <app-list-state
+    *ngIf="
+      !isLoadingData &&
+      !hasDataLoadError &&
+      animals.length > 0 &&
+      paddocks.length === 0
+    "
+    state="empty"
+    icon="map-outline"
+    title="Necesitas un potrero registrado"
+    description="Registra un potrero antes de crear un movimiento."
+    actionLabel="Registrar potrero"
+    (action)="goToCreatePaddock()"
+  ></app-list-state>
+
+  <form
+    *ngIf="
+      !isLoadingData &&
+      !hasDataLoadError &&
+      animals.length > 0 &&
+      paddocks.length > 0
+    "
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <p class="form-required-note"><span>*</span> Campos obligatorios</p>
+
+    <ion-list class="form-list">
+      <ion-item class="form-field">
+        <ion-label position="stacked">Animal *</ion-label>
         <ion-select
           formControlName="animalId"
           placeholder="Seleccionar animal"
           (ionChange)="onAnimalChange($event.detail.value)"
         >
           <ion-select-option *ngFor="let animal of animals" [value]="animal.id">
-            {{ animal.code }} - {{ animal.species }}
+            {{ animal.code }} - {{ speciesLabels[animal.species] }}
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.animalId"
+        requiredMessage="Selecciona el animal."
+      ></app-form-field-error>
 
-      <ion-item lines="none" *ngIf="selectedAnimal">
+      <ion-item class="form-field" lines="none" *ngIf="selectedAnimal">
         <ion-label>
           Potrero actual:
           <strong>{{ getPaddockName(selectedAnimal.paddockId) }}</strong>
         </ion-label>
       </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Potrero destino</ion-label>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Potrero destino *</ion-label>
         <ion-select
           formControlName="toPaddockId"
           placeholder="Seleccionar potrero"
         >
           <ion-select-option
-            *ngFor="let paddock of paddocks"
+            *ngFor="let paddock of destinationPaddocks"
             [value]="paddock.id"
           >
             {{ paddock.name }}
           </ion-select-option>
         </ion-select>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.toPaddockId"
+        requiredMessage="Selecciona el potrero destino."
+      ></app-form-field-error>
 
-      <ion-item>
-        <ion-label position="stacked">Fecha de movimiento</ion-label>
-        <ion-input type="date" formControlName="movementDate"></ion-input>
+      <ion-item class="form-field">
+        <ion-label position="stacked">Fecha de movimiento *</ion-label>
+        <ion-input
+          type="date"
+          formControlName="movementDate"
+          [max]="today"
+        ></ion-input>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.movementDate"
+        requiredMessage="Selecciona la fecha del movimiento."
+      ></app-form-field-error>
 
-      <ion-item>
+      <ion-item class="form-field">
         <ion-label position="stacked">Notas</ion-label>
         <ion-textarea
           formControlName="notes"
           placeholder="Observaciones"
+          maxlength="500"
+          [autoGrow]="true"
         ></ion-textarea>
       </ion-item>
+      <app-form-field-error
+        [control]="form.controls.notes"
+      ></app-form-field-error>
     </ion-list>
 
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit"> Guardar movimiento </ion-button>
+    <div class="form-actions">
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="form.invalid || !selectedAnimal || isSubmitting"
+      >
+        Guardar movimiento
+      </ion-button>
     </div>
   </form>
+  </div>
 </ion-content>

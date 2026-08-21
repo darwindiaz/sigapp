@@ -1,16 +1,47 @@
 <app-header title="Registrar vacunación" [backButton]="backUrl"></app-header>
 
 <ion-content>
-  <div class="ion-padding">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <ion-list>
-        <ion-item>
+  <div class="form-page">
+    <app-list-state
+      *ngIf="isLoadingAnimals"
+      state="loading"
+      title="Cargando animales"
+    ></app-list-state>
+
+    <app-list-state
+      *ngIf="!isLoadingAnimals && hasAnimalLoadError"
+      state="error"
+      title="No pudimos cargar los animales"
+      description="Comprueba tu conexión e inténtalo nuevamente."
+      actionLabel="Reintentar"
+      (action)="loadAnimals()"
+    ></app-list-state>
+
+    <app-list-state
+      *ngIf="!isLoadingAnimals && !hasAnimalLoadError && animals.length === 0"
+      state="empty"
+      icon="paw-outline"
+      title="Necesitas un animal registrado"
+      description="Registra primero un animal para asociar la vacunación."
+      actionLabel="Registrar animal"
+      (action)="goToCreateAnimal()"
+    ></app-list-state>
+
+    <form
+      *ngIf="!isLoadingAnimals && !hasAnimalLoadError && animals.length > 0"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+      <p class="form-required-note"><span>*</span> Campos obligatorios</p>
+
+      <ion-list class="form-list">
+        <ion-item class="form-field">
           <ion-select
-            label="Animal"
             label-placement="stacked"
             formControlName="animalId"
             interface="popover"
           >
+            <div slot="label">Animal *</div>
             <ion-select-option
               *ngFor="let animal of animals"
               [value]="animal.id"
@@ -19,66 +50,100 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.animalId"
+          requiredMessage="Selecciona el animal."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
-            label="Vacuna / producto"
             label-placement="stacked"
             formControlName="product"
             placeholder="Ej: Aftosa, Carbón, Triple"
-          ></ion-input>
+            maxlength="100"
+          >
+            <div slot="label">Vacuna / producto *</div>
+          </ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.product"
+          requiredMessage="Ingresa la vacuna o producto."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             type="date"
-            label="Fecha de aplicación"
             label-placement="stacked"
             formControlName="date"
-          ></ion-input>
+            [max]="today"
+          >
+            <div slot="label">Fecha de aplicación *</div>
+          </ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.date"
+          requiredMessage="Selecciona la fecha de aplicación."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             type="date"
             label="Próxima dosis"
             label-placement="stacked"
             formControlName="nextDate"
+            [min]="form.controls.date.value || today"
           ></ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.nextDate"
+          formatMessage="La próxima dosis debe ser posterior a la aplicación."
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             label="Dosis"
             label-placement="stacked"
             formControlName="dose"
             placeholder="Ej: 2 ml"
+            maxlength="50"
           ></ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.dose"
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-input
             label="Responsable"
             label-placement="stacked"
             formControlName="responsible"
+            maxlength="100"
           ></ion-input>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.responsible"
+        ></app-form-field-error>
 
-        <ion-item>
+        <ion-item class="form-field">
           <ion-textarea
             label="Notas"
             label-placement="stacked"
             formControlName="notes"
             placeholder="Observaciones del procedimiento"
+            maxlength="500"
+            [autoGrow]="true"
           ></ion-textarea>
         </ion-item>
+        <app-form-field-error
+          [control]="form.controls.notes"
+        ></app-form-field-error>
       </ion-list>
 
       <ion-button
         expand="block"
         color="primary"
         type="submit"
-        [disabled]="form.invalid || !animals.length"
+        [disabled]="form.invalid || isSubmitting"
       >
         Guardar vacunación
       </ion-button>

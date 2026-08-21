@@ -12,6 +12,7 @@ import { MessageService } from 'src/app/core/services/message.service';
 import { NavigationService } from 'src/app/core/services/navigation.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { FARM_PRODUCTION_TYPE_LABELS } from 'src/app/core/constants/domain-labels.constant';
+import { nonBlankValidator } from 'src/app/core/validators/form.validators';
 
 @Component({
   selector: 'app-farm-create',
@@ -31,20 +32,33 @@ export class FarmCreatePage implements OnInit {
   readonly productionTypeLabels = FARM_PRODUCTION_TYPE_LABELS;
 
   readonly form = this.formBuilder.group({
-    name: ['', Validators.required],
-    department: [''],
-    municipality: [''],
+    name: [
+      '',
+      [
+        Validators.required,
+        nonBlankValidator,
+        Validators.minLength(2),
+        Validators.maxLength(80),
+      ],
+    ],
+    department: ['', Validators.maxLength(80)],
+    municipality: ['', Validators.maxLength(80)],
     productionType: [FarmProductionType.DualPurpose],
-    notes: [''],
+    notes: ['', Validators.maxLength(500)],
   });
 
   backUrl: string | null = APP_ROUTES.farms;
+  isSubmitting = false;
 
   async ngOnInit(): Promise<void> {
     await this.configureBackButton();
   }
 
   async onSubmit(): Promise<void> {
+    if (this.isSubmitting) {
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       await this.messageService.showMessage(AppMessageCode.RequiredFields);
@@ -59,7 +73,8 @@ export class FarmCreatePage implements OnInit {
       return;
     }
 
-    const loading = await this.loadingService.createLoading();
+    this.isSubmitting = true;
+    const loading = await this.loadingService.createLoading('Guardando finca...');
     await loading.present();
 
     try {
@@ -74,6 +89,7 @@ export class FarmCreatePage implements OnInit {
       console.error(error);
       await this.messageService.showMessage(AppMessageCode.FarmCreateError);
     } finally {
+      this.isSubmitting = false;
       await loading.dismiss();
     }
   }
@@ -86,8 +102,13 @@ export class FarmCreatePage implements OnInit {
       return;
     }
 
-    const farms = await this.farmService.getFarmsByOwner(user.uid);
-    this.backUrl = farms.length ? APP_ROUTES.farms : null;
+    try {
+      const farms = await this.farmService.getFarmsByOwner(user.uid);
+      this.backUrl = farms.length ? APP_ROUTES.farms : null;
+    } catch (error) {
+      console.error(error);
+      this.backUrl = APP_ROUTES.farms;
+    }
   }
 
   private buildFarm(ownerId: string): Farm {
@@ -97,11 +118,11 @@ export class FarmCreatePage implements OnInit {
     return {
       id: crypto.randomUUID(),
       ownerId,
-      name: formValue.name!,
-      department: formValue.department || undefined,
-      municipality: formValue.municipality || undefined,
+      name: formValue.name!.trim(),
+      department: formValue.department?.trim() || undefined,
+      municipality: formValue.municipality?.trim() || undefined,
       productionType: formValue.productionType || undefined,
-      notes: formValue.notes || undefined,
+      notes: formValue.notes?.trim() || undefined,
       active: true,
       createdAt: now,
       updatedAt: now,

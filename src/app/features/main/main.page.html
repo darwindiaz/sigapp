@@ -13,7 +13,7 @@
     <div class="side-menu-content">
       <ion-list class="side-menu-list">
         <ion-menu-toggle auto-hide="true">
-          <ion-item button detail="false" (click)="goToHome()">
+          <ion-item button lines="full" detail="false" (click)="goToHome()">
             <ion-icon
               name="home-outline"
               slot="start"
@@ -22,7 +22,12 @@
             <ion-label>Inicio</ion-label>
           </ion-item>
 
-          <ion-item button detail="false" (click)="goToFarmSettings()">
+          <ion-item
+            button
+            lines="full"
+            detail="false"
+            (click)="goToFarmSettings()"
+          >
             <ion-icon
               name="business-outline"
               slot="start"
