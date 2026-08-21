@@ -1,8 +1,7 @@
 {
   "name": "sigapp",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "version": "1.0.0",
+  "author": "SIGAPP",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -63,5 +62,5 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.4.0"
   },
-  "description": "An Ionic project"
+  "description": "Gestión ganadera para fincas, animales, potreros y salud."
 }

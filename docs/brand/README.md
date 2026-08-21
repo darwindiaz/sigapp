@@ -56,6 +56,17 @@ El simbolo debe seguir siendo reconocible a `24 x 24px`. Si se genera con una
 herramienta de IA, se debe pedir sin texto y luego construir el nombre con una
 tipografia real para evitar letras deformadas.
 
+### Recursos provisionales del MVP
+
+- `src/assets/logo/logo.webp`: símbolo utilizado dentro de la aplicación.
+- `src/assets/icon/favicon.png`: favicon maestro de `512 x 512`.
+- `src/assets/icon/icon-192.png` y `icon-512.png`: iconos del manifiesto web.
+- `resources/icon.png`: fuente maestra del icono nativo de `1024 x 1024`.
+- `resources/splash.png`: fuente maestra de la pantalla de inicio.
+
+Estas rutas deben conservarse cuando se reemplace el logo provisional para
+evitar cambios innecesarios en la configuración web y nativa.
+
 ## 3. Paleta de colores
 
 La paleta combina naturaleza, confianza y lectura operativa. El verde identifica

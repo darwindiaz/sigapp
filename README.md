@@ -4,6 +4,10 @@ SIGAPP es un MVP construido con Ionic 8, Angular 18 y Firebase/Firestore para ap
 
 El objetivo inicial es cubrir lo mínimo funcional para inventario animal, potreros, salud/vacunación, nacimientos y movimientos internos, manteniendo una arquitectura que permita reemplazar Firebase por otro backend más adelante.
 
+## Versión actual
+
+**SIGAPP 1.0.0 — Primera versión MVP.**
+
 ## Estado actual del MVP
 
 - Autenticación con Firebase.
