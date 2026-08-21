@@ -7,10 +7,12 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListStateComponent } from './components/list-state/list-state.component';
 import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
+import { FormControlA11yDirective } from './directives/form-control-a11y.directive';
 
 @NgModule({
   declarations: [
     CustomInputComponent,
+    FormControlA11yDirective,
     FormFieldErrorComponent,
     HeaderComponent,
     ListStateComponent,
@@ -18,6 +20,7 @@ import { FormFieldErrorComponent } from './components/form-field-error/form-fiel
   ],
   exports: [
     CustomInputComponent,
+    FormControlA11yDirective,
     FormFieldErrorComponent,
     HeaderComponent,
     ListStateComponent,

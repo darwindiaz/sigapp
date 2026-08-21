@@ -20,6 +20,7 @@ import {
 } from '@angular/fire/storage';
 import {
   Auth,
+  sendPasswordResetEmail,
   UserCredential,
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
@@ -37,6 +38,10 @@ export class FirebaseService {
   /*Autenticacion*/
   signIn(user: User): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, user.email, user.password);
+  }
+
+  sendPasswordReset(email: string): Promise<void> {
+    return sendPasswordResetEmail(this.auth, email);
   }
 
   async signOut(): Promise<void> {

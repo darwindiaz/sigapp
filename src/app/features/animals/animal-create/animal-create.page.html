@@ -2,7 +2,11 @@
 
 <ion-content>
   <div class="form-page">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form
+    [formGroup]="form"
+    [attr.aria-busy]="isSubmitting"
+    (ngSubmit)="onSubmit()"
+  >
     <p class="form-required-note"><span>*</span> Campos obligatorios</p>
 
     <ion-list class="form-list">
@@ -12,6 +16,7 @@
           formControlName="code"
           placeholder="Ej: VACA-001"
           maxlength="50"
+          required
         ></ion-input>
       </ion-item>
       <app-form-field-error
@@ -21,7 +26,11 @@
 
       <ion-item class="form-field">
         <ion-label position="stacked">Especie *</ion-label>
-        <ion-select formControlName="species" placeholder="Seleccionar">
+        <ion-select
+          formControlName="species"
+          placeholder="Seleccionar"
+          required
+        >
           <ion-select-option
             *ngFor="let species of speciesOptions"
             [value]="species"
@@ -37,7 +46,11 @@
 
       <ion-item class="form-field">
         <ion-label position="stacked">Categoría *</ion-label>
-        <ion-select formControlName="category" placeholder="Seleccionar">
+        <ion-select
+          formControlName="category"
+          placeholder="Seleccionar"
+          required
+        >
           <ion-select-option
             *ngFor="let category of categoryOptions"
             [value]="category"
@@ -53,7 +66,7 @@
 
       <ion-item class="form-field">
         <ion-label position="stacked">Sexo *</ion-label>
-        <ion-select formControlName="sex" placeholder="Seleccionar">
+        <ion-select formControlName="sex" placeholder="Seleccionar" required>
           <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
             {{ sexLabels[sex] }}
           </ion-select-option>
@@ -78,7 +91,7 @@
 
       <ion-item class="form-field">
         <ion-label position="stacked">Estado *</ion-label>
-        <ion-select formControlName="status">
+        <ion-select formControlName="status" required>
           <ion-select-option
             *ngFor="let status of statusOptions"
             [value]="status"
@@ -109,8 +122,19 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <p *ngIf="isLoadingPaddocks" class="form-help">Cargando potreros...</p>
-      <p *ngIf="hasPaddockLoadError" class="form-help form-help--error">
+      <p
+        *ngIf="isLoadingPaddocks"
+        class="form-help"
+        role="status"
+        aria-live="polite"
+      >
+        Cargando potreros...
+      </p>
+      <p
+        *ngIf="hasPaddockLoadError"
+        class="form-help form-help--error"
+        role="alert"
+      >
         No se pudieron cargar los potreros.
         <ion-button
           type="button"
@@ -162,7 +186,7 @@
         type="submit"
         [disabled]="form.invalid || isSubmitting"
       >
-        Guardar animal
+        {{ isSubmitting ? 'Guardando...' : 'Guardar animal' }}
       </ion-button>
     </div>
   </form>

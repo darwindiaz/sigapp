@@ -6,6 +6,7 @@
     label-placement="floating"
     [readonly]="readOnly"
     [autocomplete]="autoComplete"
+    [required]="isRequired"
   >
     <div slot="label"> {{label}}
       <ion-text color="danger" *ngIf="isRequired">*</ion-text>

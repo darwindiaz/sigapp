@@ -73,6 +73,21 @@ ion-button {
   --border-radius: var(--sigapp-radius-md);
 }
 
+ion-button:focus-within,
+ion-fab-button:focus-within,
+ion-tab-button:focus-within,
+ion-item[button]:focus-within {
+  outline: 3px solid var(--sigapp-primary-dark);
+  outline-offset: 2px;
+}
+
+ion-searchbar:focus-within,
+.form-field:focus-within,
+.custom-input:focus-within {
+  outline: 3px solid var(--sigapp-primary-dark);
+  outline-offset: 2px;
+}
+
 .list-page-grid {
   padding-top: var(--sigapp-space-3);
   padding-bottom: calc(var(--sigapp-space-12) + env(safe-area-inset-bottom));
@@ -120,6 +135,10 @@ ion-button {
   --inner-border-width: 0;
 }
 
+.data-list ion-label {
+  min-width: 0;
+}
+
 .data-list h2 {
   color: var(--sigapp-text);
   font-size: var(--sigapp-font-size-md);
@@ -132,6 +151,18 @@ ion-button {
   color: var(--sigapp-text-muted);
   font-size: var(--sigapp-font-size-sm);
   line-height: 1.4;
+}
+
+.data-list h2,
+.data-list p,
+.data-list ion-note {
+  overflow-wrap: anywhere;
+}
+
+.data-list ion-note {
+  max-width: 40%;
+  text-align: end;
+  white-space: normal;
 }
 
 .form-page {
@@ -166,6 +197,7 @@ ion-button {
   --inner-border-width: 0;
   --padding-start: var(--sigapp-space-4);
   --inner-padding-end: var(--sigapp-space-4);
+  --min-height: 56px;
 
   margin-bottom: var(--sigapp-space-3);
 }
@@ -200,4 +232,38 @@ ion-button {
 
 .form-actions ion-button {
   margin: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (max-width: 480px) {
+  .form-page {
+    padding-inline: var(--sigapp-space-3);
+  }
+
+  .form-field {
+    --padding-start: var(--sigapp-space-3);
+    --inner-padding-end: var(--sigapp-space-3);
+  }
+
+  .data-list ion-item {
+    --padding-start: var(--sigapp-space-3);
+    --inner-padding-end: var(--sigapp-space-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
 }

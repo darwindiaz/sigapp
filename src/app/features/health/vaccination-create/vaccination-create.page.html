@@ -30,6 +30,7 @@
     <form
       *ngIf="!isLoadingAnimals && !hasAnimalLoadError && animals.length > 0"
       [formGroup]="form"
+      [attr.aria-busy]="isSubmitting"
       (ngSubmit)="onSubmit()"
     >
       <p class="form-required-note"><span>*</span> Campos obligatorios</p>
@@ -40,6 +41,7 @@
             label-placement="stacked"
             formControlName="animalId"
             interface="popover"
+            required
           >
             <div slot="label">Animal *</div>
             <ion-select-option
@@ -61,6 +63,7 @@
             formControlName="product"
             placeholder="Ej: Aftosa, Carbón, Triple"
             maxlength="100"
+            required
           >
             <div slot="label">Vacuna / producto *</div>
           </ion-input>
@@ -76,6 +79,7 @@
             label-placement="stacked"
             formControlName="date"
             [max]="today"
+            required
           >
             <div slot="label">Fecha de aplicación *</div>
           </ion-input>
@@ -145,7 +149,7 @@
         type="submit"
         [disabled]="form.invalid || isSubmitting"
       >
-        Guardar vacunación
+        {{ isSubmitting ? 'Guardando...' : 'Guardar vacunación' }}
       </ion-button>
     </form>
   </div>

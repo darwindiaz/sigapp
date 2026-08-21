@@ -2,6 +2,8 @@ export enum AppMessageCode {
   UserNotFound = 'USER_NOT_FOUND',
   LoginInvalid = 'LOGIN_INVALID',
   LoginSuccess = 'LOGIN_SUCCESS',
+  PasswordResetSent = 'PASSWORD-RESET-SENT',
+  PasswordResetError = 'PASSWORD-RESET-ERROR',
   RequiredFields = 'REQUIRED_FIELDS',
   UnexpectedError = 'UNEXPECTED_ERROR',
   NetworkError = 'NETWORK_ERROR',

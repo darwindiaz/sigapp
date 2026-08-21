@@ -15,6 +15,14 @@ export const APP_MESSAGES: Record<AppMessageCode, AppMessage> = {
     text: 'Sesión iniciada correctamente',
     type: AppMessageType.Success,
   },
+  [AppMessageCode.PasswordResetSent]: {
+    text: 'Revisa tu correo para restablecer la contraseña.',
+    type: AppMessageType.Success,
+  },
+  [AppMessageCode.PasswordResetError]: {
+    text: 'No se pudo enviar el correo de recuperación.',
+    type: AppMessageType.Danger,
+  },
   [AppMessageCode.RequiredFields]: {
     text: 'Completa los campos obligatorios',
     type: AppMessageType.Warning,

@@ -2,7 +2,11 @@
 
 <ion-content>
   <div class="form-page">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="form"
+      [attr.aria-busy]="isSubmitting"
+      (ngSubmit)="onSubmit()"
+    >
       <p class="form-required-note"><span>*</span> Campos obligatorios</p>
 
       <ion-list class="form-list">
@@ -12,6 +16,7 @@
             formControlName="name"
             placeholder="Ej: La Esperanza"
             maxlength="80"
+            required
           >
             <div slot="label">Nombre de la finca *</div>
           </ion-input>
@@ -85,7 +90,7 @@
         type="submit"
         [disabled]="form.invalid || isSubmitting"
       >
-        Guardar finca
+        {{ isSubmitting ? 'Guardando...' : 'Guardar finca' }}
       </ion-button>
       </div>
     </form>

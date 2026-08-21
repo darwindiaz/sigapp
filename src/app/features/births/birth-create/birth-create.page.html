@@ -30,6 +30,7 @@
     <form
       *ngIf="!isLoadingAnimals && !hasAnimalLoadError && animals.length > 0"
       [formGroup]="form"
+      [attr.aria-busy]="isSubmitting"
       (ngSubmit)="onSubmit()"
     >
       <p class="form-required-note"><span>*</span> Campos obligatorios</p>
@@ -40,6 +41,7 @@
             label-placement="stacked"
             formControlName="motherId"
             interface="popover"
+            required
           >
             <div slot="label">Madre *</div>
             <ion-select-option
@@ -79,6 +81,7 @@
             formControlName="calfCode"
             placeholder="Ej: T-001"
             maxlength="50"
+            required
           >
             <div slot="label">Código de la cría *</div>
           </ion-input>
@@ -94,6 +97,7 @@
             label-placement="stacked"
             formControlName="date"
             [max]="today"
+            required
           >
             <div slot="label">Fecha de nacimiento *</div>
           </ion-input>
@@ -108,6 +112,7 @@
             label-placement="stacked"
             formControlName="sex"
             interface="popover"
+            required
           >
             <div slot="label">Sexo *</div>
             <ion-select-option *ngFor="let sex of sexOptions" [value]="sex">
@@ -125,6 +130,7 @@
             label-placement="stacked"
             formControlName="status"
             interface="popover"
+            required
           >
             <div slot="label">Estado *</div>
             <ion-select-option
@@ -176,7 +182,7 @@
         type="submit"
         [disabled]="form.invalid || isSubmitting"
       >
-        Guardar nacimiento
+        {{ isSubmitting ? 'Guardando...' : 'Guardar nacimiento' }}
       </ion-button>
     </form>
   </div>

@@ -1,7 +1,13 @@
 <ion-content class="auth-content">
   <div class="auth-layout">
-    <form class="auth-form" [formGroup]="formAuth" (ngSubmit)="onSubmit()">
+    <form
+      class="auth-form"
+      [formGroup]="formAuth"
+      [attr.aria-busy]="isSubmitting"
+      (ngSubmit)="onSubmit()"
+    >
       <app-logo></app-logo>
+      <h1 class="auth-title">Iniciar sesión</h1>
       <app-custom-input
         type="email"
         icon="person-circle-outline"
@@ -18,7 +24,12 @@
         [control]="$any(formAuth).get('password')"
       ></app-custom-input>
       <div class="ion-text-end">
-        <ion-button fill="clear" size="small" routerLink="forgot-password">
+        <ion-button
+          type="button"
+          fill="clear"
+          size="small"
+          routerLink="forgot-password"
+        >
           ¿Olvidaste tu contraseña?
         </ion-button>
       </div>
@@ -29,7 +40,7 @@
         color="primary"
         class="button-submit"
       >
-        Iniciar sesión
+        {{ isSubmitting ? 'Ingresando...' : 'Iniciar sesión' }}
       </ion-button>
     </form>
   </div>

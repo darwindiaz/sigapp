@@ -2,7 +2,11 @@
 
 <ion-content>
   <div class="form-page">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form
+    [formGroup]="form"
+    [attr.aria-busy]="isSubmitting"
+    (ngSubmit)="onSubmit()"
+  >
     <p class="form-required-note"><span>*</span> Campos obligatorios</p>
 
     <ion-list class="form-list">
@@ -12,6 +16,7 @@
           formControlName="name"
           placeholder="Ej: Potrero 1"
           maxlength="80"
+          required
         ></ion-input>
       </ion-item>
       <app-form-field-error
@@ -62,7 +67,7 @@
 
       <ion-item class="form-field">
         <ion-label position="stacked">Estado *</ion-label>
-        <ion-select formControlName="status">
+        <ion-select formControlName="status" required>
           <ion-select-option
             *ngFor="let status of statusOptions"
             [value]="status"
@@ -96,7 +101,7 @@
         type="submit"
         [disabled]="form.invalid || isSubmitting"
       >
-        Guardar potrero
+        {{ isSubmitting ? 'Guardando...' : 'Guardar potrero' }}
       </ion-button>
     </div>
   </form>

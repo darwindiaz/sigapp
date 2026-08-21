@@ -50,6 +50,7 @@
       paddocks.length > 0
     "
     [formGroup]="form"
+    [attr.aria-busy]="isSubmitting"
     (ngSubmit)="onSubmit()"
   >
     <p class="form-required-note"><span>*</span> Campos obligatorios</p>
@@ -60,6 +61,7 @@
         <ion-select
           formControlName="animalId"
           placeholder="Seleccionar animal"
+          required
           (ionChange)="onAnimalChange($event.detail.value)"
         >
           <ion-select-option *ngFor="let animal of animals" [value]="animal.id">
@@ -72,7 +74,12 @@
         requiredMessage="Selecciona el animal."
       ></app-form-field-error>
 
-      <ion-item class="form-field" lines="none" *ngIf="selectedAnimal">
+      <ion-item
+        class="form-field"
+        lines="none"
+        *ngIf="selectedAnimal"
+        aria-live="polite"
+      >
         <ion-label>
           Potrero actual:
           <strong>{{ getPaddockName(selectedAnimal.paddockId) }}</strong>
@@ -84,6 +91,7 @@
         <ion-select
           formControlName="toPaddockId"
           placeholder="Seleccionar potrero"
+          required
         >
           <ion-select-option
             *ngFor="let paddock of destinationPaddocks"
@@ -104,6 +112,7 @@
           type="date"
           formControlName="movementDate"
           [max]="today"
+          required
         ></ion-input>
       </ion-item>
       <app-form-field-error
@@ -131,7 +140,7 @@
         type="submit"
         [disabled]="form.invalid || !selectedAnimal || isSubmitting"
       >
-        Guardar movimiento
+        {{ isSubmitting ? 'Guardando...' : 'Guardar movimiento' }}
       </ion-button>
     </div>
   </form>
